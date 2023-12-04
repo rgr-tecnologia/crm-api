@@ -7,14 +7,22 @@ export async function getClientes() {
 export async function getCliente(id: string) {
   return await repository.findById(id);
 }
-export async function  createCliente(data: ClienteDto) {
-  const result = ClienteDto.parse(data);
-  return await repository.create(result);
+export async function createCliente(data: ClienteDto) {
+  try {
+    const result = ClienteDto.parse(data);
+    return await repository.create(result);
+  } catch (error) {
+    throw error;
+  }
 }
-export async function  updateCliente(id: string, data: ClienteDto) {
-  const result = ClienteDto.parse(data);  
-  return await repository.update(id, result);
+export async function updateCliente(id: string, data: ClienteDto) {
+  try {
+    const result = ClienteDto.parse(data);
+    await repository.update(id, result);
+  } catch (error) {
+    throw error;
+  }
 }
-export async function  deleteCliente(id: string) {
+export async function deleteCliente(id: string) {
   return await repository.remove(id);
 }
