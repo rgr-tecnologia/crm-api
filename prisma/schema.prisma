@@ -12,6 +12,7 @@ model Cliente {
   nomeFantasia String  @unique
   contratos Contrato[]
   representantes ClienteRepresentante[]
+  oportunidades Oportunidade[]
 }
 
 model ClienteRepresentante {
@@ -41,4 +42,22 @@ model Contrato {
   representanteId String
   representante ClienteRepresentante @relation(fields: [representanteId], references: [id])
   status String
+}
+
+model Oportunidade {
+  id String @id @default(uuid())
+  clienteId String
+  cliente Cliente @relation(fields: [clienteId], references: [id])
+  propostas Proposta[]
+}
+
+model Proposta {
+  id String @id @default(uuid())
+  tipo String
+  versao String
+  dataEnvio DateTime
+  emailEnviado Boolean
+  comissao Float
+  oportunidadeId String
+  oportunidade Oportunidade @relation(fields: [oportunidadeId], references: [id])
 }
