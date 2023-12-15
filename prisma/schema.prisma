@@ -1,63 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model Cliente {
-  id String @id @default(uuid())
-  nomeFantasia String  @unique
-  contratos Contrato[]
+  id             String                 @id @default(uuid())
+  nomeFantasia   String                 @unique
+  contratos      Contrato[]
   representantes ClienteRepresentante[]
-  oportunidades Oportunidade[]
+  oportunidades  Oportunidade[]
 }
 
 model ClienteRepresentante {
-  id String @id @default(uuid())
-  clienteId String
-  cliente Cliente @relation(fields: [clienteId], references: [id])
-  nome String
-  email String
-  departamento String
-  cargo String
+  id             String         @id @default(uuid())
+  clienteId      String
+  cliente        Cliente        @relation(fields: [clienteId], references: [id])
+  nome           String
+  email          String
+  departamento   String
+  cargo          String
   //TBD - endereco Endereco
   dataNascimento DateTime
-  telefone String
-  status String
-  contratos Contrato[]
+  telefone       String
+  status         String
+  contratos      Contrato[]
+  oportunidades  Oportunidade[]
+  Lead           Lead[]
 }
 
 model Contrato {
-  id String @id @default(uuid())
-  clienteId String
-  cliente Cliente @relation(fields: [clienteId], references: [id])
-  titulo String
-  caracteristica String
-  dataInicio DateTime
+  id              String               @id @default(uuid())
+  clienteId       String
+  cliente         Cliente              @relation(fields: [clienteId], references: [id])
+  titulo          String
+  caracteristica  String
+  dataInicio      DateTime
   dataFimPrevista DateTime
-  valor Float
+  valor           Float
   representanteId String
-  representante ClienteRepresentante @relation(fields: [representanteId], references: [id])
-  status String
+  representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
+  status          String
 }
 
 model Oportunidade {
-  id String @id @default(uuid())
-  clienteId String
-  cliente Cliente @relation(fields: [clienteId], references: [id])
-  propostas Proposta[]
+  id              String               @id @default(uuid())
+  clienteId       String
+  cliente         Cliente              @relation(fields: [clienteId], references: [id])
+  representanteId String
+  representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
+  //TBD - departamento
+  propostas       Proposta[]
+  titulo          String
+  //TBD - gerenteComercial
+  //TBD - caracteristica
+  //TBD - dataOportunidade
+  //TBD - periodoContratual
+  //TBD - valorPrevisto
+  //TBD - areaExecutora
+  //TBD - dataFechamentoPrevista
+}
+
+enum TipoProposta {
+  PROPOSTA_TECNICA_COMERCIAL
+  CONTRATO
+  ADITIVO
 }
 
 model Proposta {
-  id String @id @default(uuid())
-  tipo String
-  versao String
-  dataEnvio DateTime
-  emailEnviado Boolean
-  comissao Float
+  id             String       @id @default(uuid())
+  tipo           TipoProposta
+  versao         String
+  dataEnvio      DateTime
+  emailEnviado   Boolean //Não entendi o propósito dessa coluna
+  comissao       Float
   oportunidadeId String
-  oportunidade Oportunidade @relation(fields: [oportunidadeId], references: [id])
+  oportunidade   Oportunidade @relation(fields: [oportunidadeId], references: [id])
+}
+
+model Lead {
+  id              String               @id @default(uuid())
+  //TBD- gerenteComercialId
+  representanteId String
+  representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
+  //TBD - telefone do cliente ou do representante?
+  //TBD - email do cliente ou do representante?
+  //TBD - empresa? Seria o cliente?
+  observacao      String
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  name     String
+  password String
+  role     Role
 }
