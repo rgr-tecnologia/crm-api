@@ -18,7 +18,8 @@ export async function createCliente(data: ClienteDto) {
 export async function updateCliente(id: string, data: ClienteDto) {
   try {
     const result = ClienteDto.parse(data);
-    await repository.update(id, result);
+    const cliente = await repository.update(id, result);
+    return cliente;
   } catch (error) {
     throw error;
   }

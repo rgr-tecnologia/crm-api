@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { prismaConnection } from "../../scripts/prismaConection";
 import { ClienteDto } from "./dtos/cliente.dto";
 
@@ -18,7 +17,7 @@ export const findById = async (id: string) => {
 
 export const create = async (data: ClienteDto) => {
   try {
-    await clientesRepository.create({
+    return await clientesRepository.create({
       data,
     });
   } catch (error) {
@@ -28,12 +27,14 @@ export const create = async (data: ClienteDto) => {
 
 export const update = async (id: string, data: ClienteDto) => {
   try {
-    await clientesRepository.update({
+    const result = await clientesRepository.update({
       where: {
         id,
       },
       data,
     });
+
+    return result;
   } catch (error) {
     throw error;
   }

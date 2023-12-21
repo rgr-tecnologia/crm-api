@@ -40,6 +40,7 @@ clientesRouter.put("/:clienteId", async (req, res) => {
     res.json(cliente);
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error);
       res.status(400).json({ message: error.message });
       return;
     }
