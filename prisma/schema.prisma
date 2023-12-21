@@ -37,19 +37,30 @@ model ClienteRepresentante {
 }
 
 model Contrato {
-  id              String               @id @default(uuid())
-  clienteId       String
-  cliente         Cliente              @relation(fields: [clienteId], references: [id])
-  titulo          String
-  caracteristica  String
-  dataInicio      DateTime
-  dataFimPrevista DateTime
-  valor           Float
-  representanteId String
-  representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
-  status          String
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @default(now()) @updatedAt
+  id                     String                 @id @default(uuid())
+  clienteId              String
+  cliente                Cliente                @relation(fields: [clienteId], references: [id])
+  titulo                 String
+  caracteristica         ContratoCaracteristica @default(MENSALIDADE)
+  dataInicio             DateTime
+  dataFimPrevista        DateTime
+  valor                  Float
+  representanteId        String
+  representante          ClienteRepresentante   @relation(fields: [representanteId], references: [id])
+  //cnpj - Deverá ficar no contrato ou no cliente??
+  status                 String
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @default(now()) @updatedAt
+  RenovarAutomaticamente Boolean                @default(false)
+  //TBD - PeriodoContratual - O que é isso?
+  DataPagamento          DateTime               @default(now()) //Melhorar nomenclatura?
+  NumeroParcelas         Int                    @default(0)
+  //TBD - AreaExecutora
+}
+
+enum ContratoCaracteristica {
+  MENSALIDADE
+  PROJETO
 }
 
 model Oportunidade {
@@ -96,9 +107,9 @@ model Lead {
   //TBD- gerenteComercialId
   representanteId String
   representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
-  //TBD - telefone do cliente ou do representante?
-  //TBD - email do cliente ou do representante?
-  //TBD - empresa? Seria o cliente?
+  //TBD - Telefone - telefone do cliente ou do representante?
+  //TBD - Email - email do cliente ou do representante?
+  //TBD - Empresa - é o mesmo que cliente?
   observacao      String
   createdAt       DateTime             @default(now())
   updatedAt       DateTime             @default(now()) @updatedAt
