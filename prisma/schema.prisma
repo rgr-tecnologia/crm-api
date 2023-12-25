@@ -105,6 +105,7 @@ model Proposta {
 model Lead {
   id              String               @id @default(uuid())
   //TBD- gerenteComercialId
+  nomeFantasia    String //Criado temporariamente enquanto não sei o significado da coluna "Empresa"
   representanteId String
   representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
   //TBD - Telefone - telefone do cliente ou do representante?
