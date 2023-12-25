@@ -11,18 +11,18 @@ clientesRouter.use("/:clienteId/representantes", representantesRouter);
 clientesRouter.use("/:clienteId/contratos", contratosRouter);
 
 clientesRouter.get("/", async (req, res) => {
-  const clientes = await service.getClientes();
+  const clientes = await service.getAll();
   res.json(clientes);
 });
 
 clientesRouter.get("/:clienteId", async (req, res) => {
-  const cliente = await service.getCliente(req.params.clienteId);
+  const cliente = await service.getById(req.params.clienteId);
   res.json(cliente);
 });
 
 clientesRouter.post("/", async (req, res) => {
   try {
-    const cliente = await service.createCliente(req.body);
+    const cliente = await service.create(req.body);
     res.json(cliente);
   } catch (error) {
     if (error instanceof Error) {
@@ -36,7 +36,7 @@ clientesRouter.post("/", async (req, res) => {
 
 clientesRouter.put("/:clienteId", async (req, res) => {
   try {
-    const cliente = await service.updateCliente(req.params.clienteId, req.body);
+    const cliente = await service.update(req.params.clienteId, req.body);
     res.json(cliente);
   } catch (error) {
     if (error instanceof Error) {
@@ -49,6 +49,6 @@ clientesRouter.put("/:clienteId", async (req, res) => {
 });
 
 clientesRouter.delete("/:clienteId", async (req, res) => {
-  const cliente = await service.deleteCliente(req.params.clienteId);
+  const cliente = await service.remove(req.params.clienteId);
   res.json(cliente);
 });
