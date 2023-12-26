@@ -31,7 +31,6 @@ model ClienteRepresentante {
   status         String
   contratos      Contrato[]
   oportunidades  Oportunidade[]
-  Lead           Lead[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @default(now()) @updatedAt
 }
@@ -74,7 +73,6 @@ model Oportunidade {
   titulo          String
   //TBD - gerenteComercial
   //TBD - caracteristica
-  //TBD - dataOportunidade
   //TBD - periodoContratual
   //TBD - valorPrevisto
   //TBD - areaExecutora
@@ -103,17 +101,15 @@ model Proposta {
 }
 
 model Lead {
-  id              String               @id @default(uuid())
+  id                    String   @id @default(uuid())
   //TBD- gerenteComercialId
-  nomeFantasia    String //Criado temporariamente enquanto não sei o significado da coluna "Empresa"
-  representanteId String
-  representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
-  //TBD - Telefone - telefone do cliente ou do representante?
-  //TBD - Email - email do cliente ou do representante?
-  //TBD - Empresa - é o mesmo que cliente?
-  observacao      String
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @default(now()) @updatedAt
+  nomeFantasia          String //Criado temporariamente enquanto não sei o significado da coluna "Empresa"
+  nomeRepresentante     String
+  telefoneRepresentante String
+  emailRepresentante    String
+  observacao            String
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
 }
 
 enum Role {

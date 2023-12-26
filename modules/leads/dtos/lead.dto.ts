@@ -3,7 +3,9 @@ import { z } from "zod";
 export const LeadDto = z.object({
   id: z.string().uuid(),
   nomeFantasia: z.string(),
-  representanteId: z.string().uuid(),
+  nomeRepresentante: z.string(),
+  telefoneRepresentante: z.string(),
+  emailRepresentante: z.string().email(),
   observacao: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),

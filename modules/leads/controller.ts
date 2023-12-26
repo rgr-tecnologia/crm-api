@@ -11,7 +11,9 @@ leadsRouter.get("/", async (req, res) => {
     const leads = await service.getAll();
     res.json(leads);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 });
 
@@ -22,6 +24,8 @@ leadsRouter.post("/:id/promote", async (req, res) => {
     const cliente = await service.promote(id, data);
     res.json(cliente);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 });
