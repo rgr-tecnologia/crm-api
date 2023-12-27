@@ -4,7 +4,7 @@ export const LeadDto = z.object({
   id: z.string().uuid(),
   nomeFantasia: z.string(),
   nomeRepresentante: z.string(),
-  telefoneRepresentante: z.string(),
+  telefoneRepresentante: z.string().max(11),
   emailRepresentante: z.string().email(),
   observacao: z.string(),
   createdAt: z.date(),

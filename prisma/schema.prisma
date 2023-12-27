@@ -25,7 +25,7 @@ model ClienteRepresentante {
   email          String
   departamento   String
   cargo          String
-  //TBD - endereco Endereco
+  //TBD - endereco Endereco - endereço da empresa ou do representante?
   dataNascimento DateTime
   telefone       String
   status         String

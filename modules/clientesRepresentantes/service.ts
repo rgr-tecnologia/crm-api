@@ -1,5 +1,5 @@
 import { prismaConnection } from "../../scripts/prismaConection";
-import { clienteRepresentanteDTO } from "./dto/clienteRepresentante.dto";
+import { ClienteRepresentanteDTOCreate } from "./dto/clienteRepresentante.dto";
 
 const repository = prismaConnection.clienteRepresentante;
 
@@ -36,9 +36,9 @@ export async function getClienteRepresentante(id: string) {
 }
 
 export async function createClienteRepresentante(
-  data: clienteRepresentanteDTO
+  data: ClienteRepresentanteDTOCreate
 ) {
-  const result = clienteRepresentanteDTO.parse(data);
+  const result = ClienteRepresentanteDTOCreate.parse(data);
   return await repository.create({
     data: result,
   });
@@ -46,9 +46,9 @@ export async function createClienteRepresentante(
 
 export async function updateClienteRepresentante(
   id: string,
-  data: clienteRepresentanteDTO
+  data: ClienteRepresentanteDTOCreate
 ) {
-  const result = clienteRepresentanteDTO.parse(data);
+  const result = ClienteRepresentanteDTOCreate.parse(data);
   return await repository.update({
     where: {
       id,
