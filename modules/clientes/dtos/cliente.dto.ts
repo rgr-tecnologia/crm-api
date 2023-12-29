@@ -1,8 +1,10 @@
 import { z } from "zod";
+import { cnpjSchema } from "../../../zod/cnpjSchema";
 
 export const ClienteDto = z.object({
   id: z.string(),
   nomeFantasia: z.string(),
+  cnpj: cnpjSchema,
   createdAt: z.date(),
   updatedAt: z.date(),
 });

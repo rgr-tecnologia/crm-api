@@ -10,11 +10,13 @@ datasource db {
 model Cliente {
   id             String                 @id @default(uuid())
   nomeFantasia   String
+  cnpj           Int                    @unique
   contratos      Contrato[]
   representantes ClienteRepresentante[]
   oportunidades  Oportunidade[]
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @default(now()) @updatedAt
+  ativo          Boolean                @default(true)
 }
 
 model ClienteRepresentante {
