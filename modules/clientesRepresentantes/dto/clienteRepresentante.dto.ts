@@ -7,7 +7,7 @@ export const ClienteRepresentanteDTO = z.object({
   email: z.string(),
   telefone: z.string(),
   cargo: z.string(),
-  status: z.string(),
+  ativo: z.boolean(),
   departamento: z.string(),
   dataNascimento: z.string().datetime(),
   createdAt: z.string().datetime(),

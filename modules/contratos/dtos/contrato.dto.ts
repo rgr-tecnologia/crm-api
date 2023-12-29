@@ -8,7 +8,7 @@ export const ContratoDTO = z.object({
   dataFimPrevista: z.date(),
   valor: z.number(),
   representanteId: z.string().uuid(),
-  status: z.enum(["ATIVO", "INATIVO"]),
+  ativo: z.boolean(),
   RenovarAutomaticamente: z.boolean(),
   DataPagamento: z.date(),
   NumeroParcelas: z.number(),

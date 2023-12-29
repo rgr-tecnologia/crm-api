@@ -30,7 +30,7 @@ model ClienteRepresentante {
   //TBD - endereco Endereco - endereço da empresa ou do representante?
   dataNascimento DateTime
   telefone       String
-  status         String
+  ativo          Boolean        @default(true)
   contratos      Contrato[]
   oportunidades  Oportunidade[]
   createdAt      DateTime       @default(now())
@@ -49,7 +49,7 @@ model Contrato {
   representanteId        String
   representante          ClienteRepresentante   @relation(fields: [representanteId], references: [id])
   //cnpj - Deverá ficar no contrato ou no cliente??
-  status                 String
+  ativo                  Boolean                @default(true)
   createdAt              DateTime               @default(now())
   updatedAt              DateTime               @default(now()) @updatedAt
   RenovarAutomaticamente Boolean                @default(false)
