@@ -5,6 +5,7 @@ export const ClienteDto = z.object({
   id: z.string(),
   nomeFantasia: z.string(),
   cnpj: cnpjSchema,
+  ativo: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
