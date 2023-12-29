@@ -1,10 +1,11 @@
 import { z } from "zod";
+import { mobilePhoneSchema } from "../../../zod/mobilePhoneSchema";
 
 export const LeadDto = z.object({
   id: z.string().uuid(),
   nomeFantasia: z.string(),
   nomeRepresentante: z.string(),
-  telefoneRepresentante: z.string().max(11),
+  telefoneRepresentante: mobilePhoneSchema,
   emailRepresentante: z.string().email(),
   observacao: z.string(),
   createdAt: z.date(),

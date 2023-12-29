@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { cnpjValidate } from "../lib/utils/cnpjValidate";
+import { cnpjValidate } from "../lib/validators/cnpjValidate";
 
 export const cnpjSchema = z
   .string()
