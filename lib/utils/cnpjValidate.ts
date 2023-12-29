@@ -1,4 +1,4 @@
-export const cnpjValidate = (cnpj: number): boolean => {
+export const cnpjValidate = (cnpj: string): boolean => {
   const cleanCnpj = cnpj.toString().replace(/\D/g, "");
 
   if (cleanCnpj.length !== 14) {

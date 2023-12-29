@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Cliente" ALTER COLUMN "cnpj" SET DATA TYPE TEXT;

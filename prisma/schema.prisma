@@ -10,7 +10,7 @@ datasource db {
 model Cliente {
   id             String                 @id @default(uuid())
   nomeFantasia   String
-  cnpj           Int                    @unique
+  cnpj           String                 @unique
   contratos      Contrato[]
   representantes ClienteRepresentante[]
   oportunidades  Oportunidade[]
