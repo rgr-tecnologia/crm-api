@@ -2,6 +2,7 @@ import { ClienteDtoCreate } from "../clientes/dtos/cliente.dto";
 import { LeadDtoCreate } from "./dtos/lead.dto";
 import { prismaConnection } from "../../scripts/prismaConection";
 import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
+import { unmaskPhone } from "../../lib/utils/unmaskPhone";
 
 const repository = prismaConnection.lead;
 
@@ -14,7 +15,16 @@ export async function getById(id: string) {
 }
 
 export async function create(data: LeadDtoCreate) {
-  return await repository.create({ data });
+  try {
+    const phone = unmaskPhone(data.telefoneRepresentante);
+    const lead = LeadDtoCreate.parse({
+      ...data,
+      telefoneRepresentante: phone,
+    });
+    return repository.create({ data: lead });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function remove(id: string) {
