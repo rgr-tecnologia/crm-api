@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { cnpjValidate } from "../lib/validators/cnpjValidate";
+import { isCnpjValid } from "../lib/validators/isCnpjValid";
 
 export const cnpjSchema = z
   .string()
-  .refine(cnpjValidate, { message: "CNPJ inválido" });
+  .refine(isCnpjValid, { message: "CNPJ inválido" });

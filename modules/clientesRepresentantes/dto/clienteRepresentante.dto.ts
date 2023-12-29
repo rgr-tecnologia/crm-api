@@ -1,11 +1,12 @@
 import { z } from "zod";
+import { mobilePhoneSchema } from "../../../zod/mobilePhoneSchema";
 
 export const ClienteRepresentanteDTO = z.object({
   id: z.string(),
   clienteId: z.string(),
   nome: z.string(),
-  email: z.string(),
-  telefone: z.string(),
+  email: z.string().email(),
+  telefone: mobilePhoneSchema,
   cargo: z.string(),
   ativo: z.boolean(),
   departamento: z.string(),
