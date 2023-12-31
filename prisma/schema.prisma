@@ -121,9 +121,8 @@ enum Role {
 
 model Usuario {
   id        String   @id @default(uuid())
+  username  String   @unique
   email     String   @unique
-  password  String
-  role      Role
   perfil    Perfil?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
