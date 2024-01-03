@@ -6,8 +6,8 @@ export const ClienteDto = z.object({
   nomeFantasia: z.string(),
   cnpj: cnpjSchema,
   ativo: z.boolean(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });
 
 export const ClienteDtoCreate = ClienteDto.omit({

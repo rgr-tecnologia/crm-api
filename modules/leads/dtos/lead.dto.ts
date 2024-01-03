@@ -8,8 +8,8 @@ export const LeadDto = z.object({
   telefoneRepresentante: mobilePhoneSchema,
   emailRepresentante: z.string().email(),
   observacao: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 });
 
 export const LeadDtoCreate = LeadDto.omit({
