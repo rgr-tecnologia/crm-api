@@ -38,25 +38,24 @@ model ClienteRepresentante {
 }
 
 model Contrato {
-  id                     String                 @id @default(uuid())
-  clienteId              String
-  cliente                Cliente                @relation(fields: [clienteId], references: [id])
-  titulo                 String
-  caracteristica         ContratoCaracteristica @default(MENSALIDADE)
-  dataInicio             DateTime
-  dataFimPrevista        DateTime
-  valor                  Float
-  representanteId        String
-  representante          ClienteRepresentante   @relation(fields: [representanteId], references: [id])
-  //cnpj - Deverá ficar no contrato ou no cliente??
-  ativo                  Boolean                @default(true)
-  createdAt              DateTime               @default(now())
-  updatedAt              DateTime               @default(now()) @updatedAt
-  RenovarAutomaticamente Boolean                @default(false)
+  id              String                 @id @default(uuid())
+  clienteId       String
+  cliente         Cliente                @relation(fields: [clienteId], references: [id])
+  titulo          String
+  caracteristica  ContratoCaracteristica @default(MENSALIDADE)
+  dataInicio      DateTime
+  dataFimPrevista DateTime
+  valor           Float
+  representanteId String
+  representante   ClienteRepresentante   @relation(fields: [representanteId], references: [id])
+  ativo           Boolean                @default(true)
+
+  RenovarAutomaticamente Boolean  @default(false)
   //TBD - PeriodoContratual - O que é isso?
-  DataPagamento          DateTime               @default(now()) //Melhorar nomenclatura?
-  NumeroParcelas         Int                    @default(0)
-  //TBD - AreaExecutora
+  dataPagamento          DateTime @default(now()) //Melhorar nomenclatura?
+  numeroParcelas         Int      @default(0)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @default(now()) @updatedAt
 }
 
 enum ContratoCaracteristica {
@@ -65,22 +64,42 @@ enum ContratoCaracteristica {
 }
 
 model Oportunidade {
-  id              String               @id @default(uuid())
-  clienteId       String
-  cliente         Cliente              @relation(fields: [clienteId], references: [id])
-  representanteId String
-  representante   ClienteRepresentante @relation(fields: [representanteId], references: [id])
+  id                     String                     @id @default(uuid())
+  clienteId              String
+  cliente                Cliente                    @relation(fields: [clienteId], references: [id])
+  representanteId        String
+  representante          ClienteRepresentante       @relation(fields: [representanteId], references: [id])
   //TBD - departamento
-  propostas       Proposta[]
-  titulo          String
+  propostas              Proposta[]
+  titulo                 String
   //TBD - gerenteComercial
-  //TBD - caracteristica
+  caracteristica         OportunidadeCaracteristica
   //TBD - periodoContratual
   //TBD - valorPrevisto
-  //TBD - areaExecutora
-  //TBD - dataFechamentoPrevista
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @default(now()) @updatedAt
+  areaExecutora          AreaExecutora
+  dataFechamentoPrevista DateTime
+  status                 OportunidadeStatus         @default(NEGOCIACAO)
+  createdAt              DateTime                   @default(now())
+  updatedAt              DateTime                   @default(now()) @updatedAt
+}
+
+enum OportunidadeStatus {
+  NEGOCIACAO
+  FECHADA
+  PERDIDA
+}
+
+enum OportunidadeCaracteristica {
+  MENSALIDADE
+  PROJETO
+}
+
+enum AreaExecutora {
+  INFRAESTRUTURA
+  DESENVOLVIMENTO
+  BUSINESS_INTELLIGENCE
+  ALOCACAO_DE_RECURSOS
+  HUNTING_DE_RECURSOS
 }
 
 enum TipoProposta {
