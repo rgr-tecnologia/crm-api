@@ -1,9 +1,9 @@
 import { Router } from "express";
-import * as service from "./service";
+import * as service from "../../oportunidades/service";
 import {
   OportunidadeCreate,
   OportunidadeUpdate,
-} from "./dtos/oportunidade.dto";
+} from "../../oportunidades/dtos/oportunidade.dto";
 
 export const oportunidadesRouter = Router({
   mergeParams: true,
