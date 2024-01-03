@@ -14,7 +14,7 @@ export const OportunidadeDto = z.object({
     "HUNTING_DE_RECURSOS",
   ]),
   dataFechamentoPrevista: z.string().datetime(),
-  status: z.enum(["NEGOCIACAO", "FECHADA", "PERDIDA"]),
+  etapa: z.enum(["NEGOCIACAO", "FECHADA", "PERDIDA"]),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

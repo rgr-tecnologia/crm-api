@@ -78,12 +78,12 @@ model Oportunidade {
   //TBD - valorPrevisto
   areaExecutora          AreaExecutora
   dataFechamentoPrevista DateTime
-  status                 OportunidadeStatus         @default(NEGOCIACAO)
+  etapa                  OportunidadeEtapa          @default(NEGOCIACAO)
   createdAt              DateTime                   @default(now())
   updatedAt              DateTime                   @default(now()) @updatedAt
 }
 
-enum OportunidadeStatus {
+enum OportunidadeEtapa {
   NEGOCIACAO
   FECHADA
   PERDIDA
