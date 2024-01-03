@@ -9,9 +9,17 @@ export const oportunidadesRouter = Router({
   mergeParams: true,
 });
 
+type Params = {
+  id: string;
+  clienteId: string;
+};
+
 oportunidadesRouter.get("/", async (req, res) => {
   try {
-    const oportunidades = await service.getAll();
+    const params = req.params as Params;
+    const { clienteId } = params;
+
+    const oportunidades = await service.getAll(clienteId);
     res.json(oportunidades);
   } catch (error) {
     if (error instanceof Error) {
@@ -33,9 +41,12 @@ oportunidadesRouter.get("/:id", async (req, res) => {
 });
 
 oportunidadesRouter.post("/", async (req, res) => {
-  const data: OportunidadeCreate = req.body;
   try {
-    const oportunidade = await service.create(data);
+    const params = req.params as Params;
+    const data: OportunidadeCreate = req.body;
+
+    const { clienteId } = params;
+    const oportunidade = await service.create(clienteId, data);
     res.json(oportunidade);
   } catch (error) {
     if (error instanceof Error) {
@@ -45,11 +56,12 @@ oportunidadesRouter.post("/", async (req, res) => {
 });
 
 oportunidadesRouter.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  const data: OportunidadeUpdate = req.body;
-
   try {
-    const oportunidade = await service.update(id, data);
+    const params = req.params as Params;
+    const data: OportunidadeUpdate = req.body;
+
+    const { clienteId } = params;
+    const oportunidade = await service.update(clienteId, data);
     res.json(oportunidade);
   } catch (error) {
     if (error instanceof Error) {

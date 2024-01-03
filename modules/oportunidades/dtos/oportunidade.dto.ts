@@ -15,6 +15,7 @@ export const OportunidadeDto = z.object({
   ]),
   dataFechamentoPrevista: z.string().datetime(),
   etapa: z.enum(["NEGOCIACAO", "FECHADA", "PERDIDA"]),
+  valor: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

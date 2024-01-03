@@ -79,6 +79,7 @@ model Oportunidade {
   areaExecutora          AreaExecutora
   dataFechamentoPrevista DateTime
   etapa                  OportunidadeEtapa          @default(NEGOCIACAO)
+  valor                  Float
   createdAt              DateTime                   @default(now())
   updatedAt              DateTime                   @default(now()) @updatedAt
 }

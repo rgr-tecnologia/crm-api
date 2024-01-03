@@ -6,24 +6,41 @@ import {
 
 const repository = prismaConnection.oportunidade;
 
-export async function getAll() {
-  return await repository.findMany();
+export async function getAll(clienteId: string) {
+  return repository.findMany({
+    where: {
+      clienteId: clienteId,
+    },
+  });
 }
 
 export async function getById(id: string) {
-  return await repository.findUnique({ where: { id } });
+  return repository.findUnique({ where: { id } });
 }
 
-export async function create(data: OportunidadeCreate) {
-  const validated = OportunidadeCreate.parse(data);
-  return await repository.create({ data: validated });
+export async function create(clienteId: string, data: OportunidadeCreate) {
+  try {
+    const validated = OportunidadeCreate.parse({
+      ...data,
+      clienteId,
+    });
+    return repository.create({
+      data: validated,
+    });
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function update(id: string, data: OportunidadeUpdate) {
-  const validated = OportunidadeUpdate.parse(data);
-  return await repository.update({ where: { id }, data: validated });
+  try {
+    const validated = OportunidadeUpdate.parse(data);
+    return repository.update({ where: { id }, data: validated });
+  } catch (error) {
+    throw error;
+  }
 }
 
 export async function remove(id: string) {
-  return await repository.delete({ where: { id } });
+  return repository.delete({ where: { id } });
 }
