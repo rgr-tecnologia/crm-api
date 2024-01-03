@@ -38,24 +38,27 @@ model ClienteRepresentante {
 }
 
 model Contrato {
-  id              String                 @id @default(uuid())
-  clienteId       String
-  cliente         Cliente                @relation(fields: [clienteId], references: [id])
-  titulo          String
-  caracteristica  ContratoCaracteristica @default(MENSALIDADE)
-  dataInicio      DateTime
-  dataFimPrevista DateTime
-  valor           Float
-  representanteId String
-  representante   ClienteRepresentante   @relation(fields: [representanteId], references: [id])
-  ativo           Boolean                @default(true)
+  id                       String               @id @default(uuid())
+  clienteId                String
+  cliente                  Cliente              @relation(fields: [clienteId], references: [id])
+  oportunidade             Oportunidade         @relation(fields: [oportunidadeId], references: [id])
+  representanteId          String
+  representanteResponsavel ClienteRepresentante @relation(fields: [representanteId], references: [id])
 
-  RenovarAutomaticamente Boolean  @default(false)
-  //TBD - PeriodoContratual - O que é isso?
-  dataPagamento          DateTime @default(now()) //Melhorar nomenclatura?
+  valor                  Float
   numeroParcelas         Int      @default(0)
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @default(now()) @updatedAt
+  dataInicio             DateTime
+  dataFimPrevista        DateTime
+  dataPagamento          DateTime
+  RenovarAutomaticamente Boolean  @default(false)
+
+  ativo Boolean @default(true)
+
+  //TBD - PeriodoContratual - O que é isso?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  oportunidadeId String
 }
 
 enum ContratoCaracteristica {
@@ -75,13 +78,13 @@ model Oportunidade {
   //TBD - gerenteComercial
   caracteristica         OportunidadeCaracteristica
   //TBD - periodoContratual
-  //TBD - valorPrevisto
   areaExecutora          AreaExecutora
   dataFechamentoPrevista DateTime
   etapa                  OportunidadeEtapa          @default(NEGOCIACAO)
   valor                  Float
   createdAt              DateTime                   @default(now())
   updatedAt              DateTime                   @default(now()) @updatedAt
+  Contrato               Contrato[]
 }
 
 enum OportunidadeEtapa {
@@ -114,7 +117,6 @@ model Proposta {
   tipo           TipoProposta
   versao         String
   dataEnvio      DateTime
-  emailEnviado   Boolean //Não entendi o propósito dessa coluna
   comissao       Float
   oportunidadeId String
   oportunidade   Oportunidade @relation(fields: [oportunidadeId], references: [id])
