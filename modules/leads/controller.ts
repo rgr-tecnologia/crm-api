@@ -20,8 +20,10 @@ leadsRouter.get("/", async (req, res) => {
 });
 
 leadsRouter.get("/:id", async (req, res) => {
-  const { id } = req.params;
   try {
+    const params = req.params;
+    const { id } = params;
+
     const lead = await service.getById(id);
     res.json(lead);
   } catch (error) {
@@ -63,6 +65,20 @@ leadsRouter.post("/:id/promote", async (req, res) => {
       cliente,
       representante,
     });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+});
+
+leadsRouter.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const data: LeadDtoCreate = req.body;
+
+  try {
+    const lead = await service.update(id, data);
+    res.json(lead);
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ message: error.message });

@@ -28,6 +28,19 @@ export async function create(data: LeadDtoCreate) {
   }
 }
 
+export async function update(id: string, data: LeadDtoCreate) {
+  try {
+    const phone = unmaskPhone(data.telefoneRepresentante);
+    const lead = LeadDtoCreate.parse({
+      ...data,
+      telefoneRepresentante: phone,
+    });
+    return await repository.update({ where: { id }, data: lead });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function remove(id: string) {
   return await repository.delete({ where: { id } });
 }
@@ -68,17 +81,6 @@ export async function promote(
 
     const isRepresentanteValid =
       ClienteRepresentanteDTOCreate.parse(representanteData);
-
-    // {
-    //   ativo: true,
-    //   cargo: "teste",
-    //   clienteId: "b6e2e1fc-ebbf-42b9-b7ba-5b78f30df22b",
-    //   dataNascimento: "2023-12-29T19:50:41.937Z",
-    //   departamento: "teste",
-    //   email: "teste@teste.com.br",
-    //   nome: "Teste de telefone lead - representante",
-    //   telefone: "11111111111",
-    // }
 
     if (!isRepresentanteValid) {
       throw new Error("Invalid representante data");
