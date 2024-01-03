@@ -32,9 +32,16 @@ export async function create(clienteId: string, data: OportunidadeCreate) {
   }
 }
 
-export async function update(id: string, data: OportunidadeUpdate) {
+export async function update(
+  id: string,
+  clienteId: string,
+  data: OportunidadeUpdate
+) {
   try {
-    const validated = OportunidadeUpdate.parse(data);
+    const validated = OportunidadeUpdate.parse({
+      ...data,
+      clienteId,
+    });
     return repository.update({ where: { id }, data: validated });
   } catch (error) {
     throw error;

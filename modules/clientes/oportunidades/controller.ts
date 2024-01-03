@@ -60,8 +60,9 @@ oportunidadesRouter.put("/:id", async (req, res) => {
     const params = req.params as Params;
     const data: OportunidadeUpdate = req.body;
 
-    const { clienteId } = params;
-    const oportunidade = await service.update(clienteId, data);
+    const { clienteId, id } = params;
+
+    const oportunidade = await service.update(id, clienteId, data);
     res.json(oportunidade);
   } catch (error) {
     if (error instanceof Error) {
