@@ -25,9 +25,9 @@ export async function getContratoByClienteId(clienteId: string) {
 
 export async function createContrato(data: ContratoDTO) {
   const validatedContrato = ContratoDTO.parse(data);
-  return await repository.create({
-    data: validatedContrato,
-  });
+  // return await repository.create({
+  //   data: validatedContrato,
+  // });
 }
 
 export async function updateContrato(id: string, data: ContratoDTO) {

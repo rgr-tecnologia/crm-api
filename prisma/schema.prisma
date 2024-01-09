@@ -54,11 +54,19 @@ model Contrato {
 
   ativo Boolean @default(true)
 
+  status ContratoStatus @default(EM_ANDAMENTO)
+
   //TBD - PeriodoContratual - O que é isso?
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @default(now()) @updatedAt
   oportunidadeId String
+}
+
+enum ContratoStatus {
+  EM_ANDAMENTO
+  FINALIZADO
+  CANCELADO
 }
 
 enum ContratoCaracteristica {
