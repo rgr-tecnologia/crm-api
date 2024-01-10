@@ -20,14 +20,11 @@ export async function getById(id: string) {
   return repository.findUnique({ where: { id } });
 }
 
-export async function create(
-  clienteId: string,
-  data: LeadOportunidadeDtoCreate
-) {
+export async function create(leadId: string, data: LeadOportunidadeDtoCreate) {
   try {
     const validated = leadOportunidadeDtoCreate.parse({
       ...data,
-      clienteId,
+      leadId,
     });
     return repository.create({
       data: validated,

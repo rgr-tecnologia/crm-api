@@ -3,10 +3,13 @@ import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/cli
 import { LeadDtoCreate } from "./dtos/lead.dto";
 import * as service from "./service";
 import { Router } from "express";
+import { leadsOportunidadesRouter } from "./oportunidades/controller";
 
 export const leadsRouter = Router({
   mergeParams: true,
 });
+
+leadsRouter.use("/:leadId/oportunidades", leadsOportunidadesRouter);
 
 leadsRouter.get("/", async (req, res) => {
   try {

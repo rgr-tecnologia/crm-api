@@ -9,14 +9,11 @@ export const leadOportunidadeDto = z.object({
   titulo: z.string(),
   caracteristica: z.nativeEnum(OportunidadeCaracteristica),
   areaExecutora: z.nativeEnum(AreaExecutora),
-  dataFechamentoPrevista: z.date(),
+  dataFechamentoPrevista: z.coerce.date(),
   etapa: z.nativeEnum(OportunidadeEtapa),
   valor: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  contrato: z.array(z.string()),
-  clienteId: z.string(),
-  clienteRepresentanteId: z.string(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 });
 
 export const leadOportunidadeDtoCreate = leadOportunidadeDto.omit({

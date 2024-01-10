@@ -8,35 +8,33 @@ datasource db {
 }
 
 model Cliente {
-  id               String                 @id @default(uuid())
-  nomeFantasia     String
-  cnpj             String                 @unique
-  contratos        Contrato[]
-  representantes   ClienteRepresentante[]
-  oportunidades    Oportunidade[]
-  createdAt        DateTime               @default(now())
-  updatedAt        DateTime               @default(now()) @updatedAt
-  ativo            Boolean                @default(true)
-  LeadOportunidade LeadOportunidade[]
+  id             String                 @id @default(uuid())
+  nomeFantasia   String
+  cnpj           String                 @unique
+  contratos      Contrato[]
+  representantes ClienteRepresentante[]
+  oportunidades  Oportunidade[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @default(now()) @updatedAt
+  ativo          Boolean                @default(true)
 }
 
 model ClienteRepresentante {
-  id               String             @id @default(uuid())
-  clienteId        String
-  cliente          Cliente            @relation(fields: [clienteId], references: [id])
-  nome             String
-  email            String
-  departamento     String
-  cargo            String
+  id             String         @id @default(uuid())
+  clienteId      String
+  cliente        Cliente        @relation(fields: [clienteId], references: [id])
+  nome           String
+  email          String
+  departamento   String
+  cargo          String
   //TBD - endereco Endereco - endereço da empresa ou do representante?
-  dataNascimento   DateTime
-  telefone         String
-  ativo            Boolean            @default(true)
-  contratos        Contrato[]
-  oportunidades    Oportunidade[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
-  LeadOportunidade LeadOportunidade[]
+  dataNascimento DateTime
+  telefone       String
+  ativo          Boolean        @default(true)
+  contratos      Contrato[]
+  oportunidades  Oportunidade[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @default(now()) @updatedAt
 }
 
 model Contrato {
@@ -100,27 +98,22 @@ model Oportunidade {
 }
 
 model LeadOportunidade {
-  id                     String                     @id @default(uuid())
-  Lead                   Lead                       @relation(fields: [leadId], references: [id])
-  leadId                 String
+  id                       String                     @id @default(uuid())
+  Lead                     Lead                       @relation(fields: [leadId], references: [id])
+  leadId                   String
   //TBD - departamento
-  propostas              Proposta[]
-  titulo                 String
+  propostas                Proposta[]
+  titulo                   String
   //TBD - gerenteComercial
-  caracteristica         OportunidadeCaracteristica
+  caracteristica           OportunidadeCaracteristica
   //TBD - periodoContratual
-  areaExecutora          AreaExecutora
-  dataFechamentoPrevista DateTime
-  etapa                  OportunidadeEtapa          @default(NEGOCIACAO)
-  valor                  Float
-  createdAt              DateTime                   @default(now())
-  updatedAt              DateTime                   @default(now()) @updatedAt
-  Contrato               Contrato[]
-
-  Cliente                  Cliente?                   @relation(fields: [clienteId], references: [id])
-  clienteId                String?
-  ClienteRepresentante     ClienteRepresentante?      @relation(fields: [clienteRepresentanteId], references: [id])
-  clienteRepresentanteId   String?
+  areaExecutora            AreaExecutora
+  dataFechamentoPrevista   DateTime
+  etapa                    OportunidadeEtapa          @default(NEGOCIACAO)
+  valor                    Float
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @default(now()) @updatedAt
+  Contrato                 Contrato[]
   LeadOportunidadeProposta LeadOportunidadeProposta[]
 }
 
