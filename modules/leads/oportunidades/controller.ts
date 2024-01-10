@@ -2,18 +2,18 @@ import * as service from "./service";
 import { Router } from "express";
 
 type Params = {
-  clienteId: string;
+  leadId: string;
 };
 
-export const oportunidadesRouter = Router({
+export const leadsOportunidadesRouter = Router({
   mergeParams: true,
 });
 
-oportunidadesRouter.get("/", async (req, res) => {
+leadsOportunidadesRouter.get("/", async (req, res) => {
   try {
     const body = req.body as Params;
-    const { clienteId } = body;
-    const oportunidades = await service.getAll(clienteId);
+    const { leadId } = body;
+    const oportunidades = await service.getAll(leadId);
     res.json(oportunidades);
   } catch (error) {
     res.status(500).json({ message: error.message });
