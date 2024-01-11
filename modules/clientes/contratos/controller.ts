@@ -33,8 +33,8 @@ contratosRouter.post("/", async (req, res) => {
     res.send(result);
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error.message);
       res.status(400).json({ message: error.message });
-      return;
     }
     res.status(500).json({ message: "Internal server error" });
   }

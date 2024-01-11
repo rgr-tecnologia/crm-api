@@ -1,5 +1,9 @@
 import { prismaConnection } from "../../scripts/prismaConection";
-import { ContratoDTO } from "./dtos/contrato.dto";
+import {
+  ContratoDTO,
+  ContratoDTOCreate,
+  ContratoDTOUpdate,
+} from "./dtos/contrato.dto";
 
 const repository = prismaConnection.contrato;
 
@@ -23,15 +27,42 @@ export async function getContratoByClienteId(clienteId: string) {
   });
 }
 
-export async function createContrato(data: ContratoDTO) {
-  const validatedContrato = ContratoDTO.parse(data);
-  // return await repository.create({
-  //   data: validatedContrato,
-  // });
+export async function createContrato(data: ContratoDTOCreate) {
+  return await prismaConnection.$transaction(async (prisma) => {
+    const oportunidade = await prisma.oportunidade.findUnique({
+      where: {
+        id: data.oportunidadeId,
+      },
+    });
+
+    if (oportunidade?.etapa !== "NEGOCIACAO") {
+      throw new Error("Oportunidade não está em negociação");
+    }
+
+    if (!oportunidade) {
+      throw new Error("Oportunidade não encontrada");
+    }
+
+    await prisma.oportunidade.update({
+      where: {
+        id: data.oportunidadeId,
+      },
+      data: {
+        etapa: "FECHADA",
+      },
+    });
+
+    const validatedContrato = ContratoDTOCreate.parse(data);
+    const contrato = await prisma.contrato.create({
+      data: validatedContrato,
+    });
+
+    return { contrato };
+  });
 }
 
-export async function updateContrato(id: string, data: ContratoDTO) {
-  const validatedContrato = ContratoDTO.parse(data);
+export async function updateContrato(id: string, data: ContratoDTOUpdate) {
+  const validatedContrato = ContratoDTOUpdate.parse(data);
   return await repository.update({
     where: {
       id,

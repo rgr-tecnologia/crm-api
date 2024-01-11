@@ -38,19 +38,21 @@ model ClienteRepresentante {
 }
 
 model Contrato {
-  id                       String               @id @default(uuid())
+  id                       String                 @id @default(uuid())
   clienteId                String
-  cliente                  Cliente              @relation(fields: [clienteId], references: [id])
-  oportunidade             Oportunidade         @relation(fields: [oportunidadeId], references: [id])
+  cliente                  Cliente                @relation(fields: [clienteId], references: [id])
+  oportunidade             Oportunidade           @relation(fields: [oportunidadeId], references: [id])
   representanteId          String
-  representanteResponsavel ClienteRepresentante @relation(fields: [representanteId], references: [id])
+  representanteResponsavel ClienteRepresentante   @relation(fields: [representanteId], references: [id])
+  caracteristica           ContratoCaracteristica
+  titulo                   String
 
   valor                  Float
   numeroParcelas         Int      @default(0)
   dataInicio             DateTime
   dataFimPrevista        DateTime
   dataPagamento          DateTime
-  RenovarAutomaticamente Boolean  @default(false)
+  renovarAutomaticamente Boolean  @default(false)
 
   ativo Boolean @default(true)
 
@@ -58,11 +60,9 @@ model Contrato {
 
   //TBD - PeriodoContratual - O que é isso?
 
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @default(now()) @updatedAt
-  oportunidadeId     String
-  LeadOportunidade   LeadOportunidade? @relation(fields: [leadOportunidadeId], references: [id])
-  leadOportunidadeId String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  oportunidadeId String
 }
 
 enum ContratoStatus {
@@ -113,7 +113,6 @@ model LeadOportunidade {
   valor                    Float
   createdAt                DateTime                   @default(now())
   updatedAt                DateTime                   @default(now()) @updatedAt
-  Contrato                 Contrato[]
   LeadOportunidadeProposta LeadOportunidadeProposta[]
 }
 
