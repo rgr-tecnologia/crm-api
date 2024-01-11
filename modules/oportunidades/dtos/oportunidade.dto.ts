@@ -13,7 +13,7 @@ export const OportunidadeDto = z.object({
     "ALOCACAO_DE_RECURSOS",
     "HUNTING_DE_RECURSOS",
   ]),
-  dataFechamentoPrevista: z.string().datetime(),
+  dataFechamentoPrevista: z.coerce.date(),
   etapa: z.enum(["NEGOCIACAO", "FECHADA", "PERDIDA"]),
   valor: z.number(),
   createdAt: z.date(),

@@ -55,21 +55,15 @@ leadsRouter.post("/:id/promote", async (req, res) => {
     representante: ClienteRepresentanteDTOCreate;
   } = req.body;
 
-  const { cliente: clienteData, representante: representanteData } = data;
+  const { cliente, representante } = data;
 
   try {
-    const { cliente, representante } = await service.promote(
-      id,
-      clienteData,
-      representanteData
-    );
+    const serviceResponse = await service.promote(id, cliente, representante);
 
-    res.json({
-      cliente,
-      representante,
-    });
+    res.json(serviceResponse);
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error.message);
       res.status(500).json({ message: error.message });
     }
   }

@@ -4,6 +4,7 @@ import { prismaConnection } from "../../scripts/prismaConection";
 import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 import { unmaskPhone } from "../../lib/utils/unmaskPhone";
 import { unmaskCnpj } from "../../lib/utils/unmaskCnpj";
+import { OportunidadeCreate } from "../oportunidades/dtos/oportunidade.dto";
 
 const repository = prismaConnection.lead;
 
@@ -71,7 +72,6 @@ export async function promote(
     }
 
     //Salvando Cliente
-
     const cliente = await prisma.cliente.create({ data: clienteData });
 
     //Validando Representante
@@ -92,10 +92,31 @@ export async function promote(
       data: representanteData,
     });
 
-    //Deletando Lead
+    //Migrando Oportunidades
+    const oportunidadesLead = await prisma.leadOportunidade.findMany({
+      where: { id },
+    });
+
+    const oportunidadesToCreate = oportunidadesLead.map((oportunidade) => {
+      return {
+        ...oportunidade,
+        clienteId: cliente.id,
+        representanteId: representante.id,
+      };
+    });
+
+    const oportunidades = await prisma.oportunidade.createMany({
+      data: oportunidadesToCreate,
+    });
+
+    //Deletando Lead e LeadOportunidade
+
+    await prisma.leadOportunidade.deleteMany({
+      where: { leadId: id },
+    });
 
     await prisma.lead.delete({ where: { id } });
 
-    return { cliente, representante, lead };
+    return { cliente, representante };
   });
 }
