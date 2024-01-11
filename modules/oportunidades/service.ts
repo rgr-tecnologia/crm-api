@@ -38,6 +38,12 @@ export async function update(
   data: OportunidadeUpdate
 ) {
   try {
+    const oportunidade = await repository.findUnique({ where: { id } });
+
+    if (!oportunidade) throw new Error("Oportunidade não encontrada");
+    if (oportunidade.etapa !== "NEGOCIACAO")
+      throw new Error("Oportunidade não pode ser alterada");
+
     const validated = OportunidadeUpdate.parse({
       ...data,
       clienteId,
