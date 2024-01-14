@@ -1,3 +1,8 @@
+import {
+  AreaExecutora,
+  OportunidadeCaracteristica,
+  OportunidadeEtapa,
+} from "@prisma/client";
 import { z } from "zod";
 
 export const OportunidadeDto = z.object({
@@ -5,16 +10,10 @@ export const OportunidadeDto = z.object({
   clienteId: z.string().uuid(),
   representanteId: z.string().uuid(),
   titulo: z.string(),
-  caracteristica: z.enum(["MENSALIDADE", "PROJETO"]),
-  areaExecutora: z.enum([
-    "INFRAESTRUTURA",
-    "DESENVOLVIMENTO",
-    "BUSINESS_INTELLIGENCE",
-    "ALOCACAO_DE_RECURSOS",
-    "HUNTING_DE_RECURSOS",
-  ]),
+  caracteristica: z.nativeEnum(OportunidadeCaracteristica),
+  areaExecutora: z.nativeEnum(AreaExecutora),
+  etapa: z.nativeEnum(OportunidadeEtapa),
   dataFechamentoPrevista: z.coerce.date(),
-  etapa: z.enum(["NEGOCIACAO", "FECHADA", "PERDIDA"]),
   valor: z.number(),
   createdAt: z.date(),
   updatedAt: z.date(),

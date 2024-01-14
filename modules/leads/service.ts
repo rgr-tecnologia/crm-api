@@ -1,10 +1,8 @@
-import { ClienteDtoCreate } from "../clientes/dtos/cliente.dto";
-import { LeadDtoCreate } from "./dtos/lead.dto";
 import { prismaConnection } from "../../scripts/prismaConection";
-import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
+import { LeadDtoCreate } from "./dtos/lead.dto";
+import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos/prospeccaoOportunidade.dto";
+import { RepresentanteOportunidadeProspeccaoDtoCreate } from "../representantesOportunidadeProspeccao/dtos/representantesOportunidadeProspeccao.dto";
 import { unmaskPhone } from "../../lib/utils/unmaskPhone";
-import { unmaskCnpj } from "../../lib/utils/unmaskCnpj";
-import { OportunidadeCreate } from "../oportunidades/dtos/oportunidade.dto";
 
 const repository = prismaConnection.lead;
 
@@ -48,75 +46,47 @@ export async function remove(id: string) {
 
 export async function promote(
   id: string,
-  clienteData: ClienteDtoCreate,
-  representanteData: ClienteRepresentanteDTOCreate
+  representanteData: RepresentanteOportunidadeProspeccaoDtoCreate,
+  oportunidadeProspeccaoData: OportunidadeProspeccaoDtoCreate
 ) {
   return await prismaConnection.$transaction(async (prisma) => {
     //Validando Lead
-    const lead = await prisma.lead.findUnique({ where: { id } });
-
-    if (!lead) {
-      throw new Error("Lead not found");
-    }
-
-    //Validando Cliente
-    const cnpj = unmaskCnpj(clienteData.cnpj);
-
-    const isClienteValid = ClienteDtoCreate.parse({
-      ...clienteData,
-      cnpj,
-    });
-
-    if (!isClienteValid) {
-      throw new Error("Invalid cliente data");
-    }
-
-    //Salvando Cliente
-    const cliente = await prisma.cliente.create({ data: clienteData });
-
-    //Validando Representante
-
-    representanteData.telefone = unmaskPhone(representanteData.telefone);
-    representanteData.clienteId = cliente.id;
-
-    const isRepresentanteValid =
-      ClienteRepresentanteDTOCreate.parse(representanteData);
-
-    if (!isRepresentanteValid) {
-      throw new Error("Invalid representante data");
-    }
-
-    //Salvando Representante
-
-    const representante = await prisma.clienteRepresentante.create({
-      data: representanteData,
-    });
-
-    //Migrando Oportunidades
-    const oportunidadesLead = await prisma.leadOportunidade.findMany({
+    const lead = await prisma.lead.findUnique({
       where: { id },
     });
 
-    const oportunidadesToCreate = oportunidadesLead.map((oportunidade) => {
-      return {
-        ...oportunidade,
-        clienteId: cliente.id,
-        representanteId: representante.id,
-      };
+    if (!lead) {
+      throw new Error("Lead não encontrado");
+    }
+
+    //Criando Representante
+    const representanteValidated =
+      RepresentanteOportunidadeProspeccaoDtoCreate.parse(representanteData);
+
+    const representanteProspeccao =
+      await prisma.representanteOportunidadeProspeccao.create({
+        data: representanteValidated,
+      });
+
+    //Criando Oportunidade
+
+    const oportunidadeValidated = OportunidadeProspeccaoDtoCreate.parse(
+      oportunidadeProspeccaoData
+    );
+
+    const oportunidadeProspeccao = await prisma.oportunidadeProspeccao.create({
+      data: {
+        ...oportunidadeValidated,
+        representanteProspeccaoId: representanteProspeccao.id,
+      },
     });
 
-    const oportunidades = await prisma.oportunidade.createMany({
-      data: oportunidadesToCreate,
-    });
-
-    //Deletando Lead e LeadOportunidade
-
-    await prisma.leadOportunidade.deleteMany({
-      where: { leadId: id },
-    });
-
+    //Removendo Lead
     await prisma.lead.delete({ where: { id } });
 
-    return { cliente, representante };
+    return {
+      representanteProspeccao,
+      oportunidadeProspeccao,
+    };
   });
 }

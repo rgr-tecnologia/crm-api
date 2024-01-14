@@ -14,9 +14,10 @@ model Cliente {
   contratos      Contrato[]
   representantes ClienteRepresentante[]
   oportunidades  Oportunidade[]
+  //TBD - endereco Endereco - endereço da empresa ou do representante?
+  ativo          Boolean                @default(true)
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @default(now()) @updatedAt
-  ativo          Boolean                @default(true)
 }
 
 model ClienteRepresentante {
@@ -27,7 +28,6 @@ model ClienteRepresentante {
   email          String
   departamento   String
   cargo          String
-  //TBD - endereco Endereco - endereço da empresa ou do representante?
   dataNascimento DateTime
   telefone       String
   ativo          Boolean        @default(true)
@@ -42,6 +42,7 @@ model Contrato {
   clienteId                String
   cliente                  Cliente                @relation(fields: [clienteId], references: [id])
   oportunidade             Oportunidade           @relation(fields: [oportunidadeId], references: [id])
+  oportunidadeId           String
   representanteId          String
   representanteResponsavel ClienteRepresentante   @relation(fields: [representanteId], references: [id])
   caracteristica           ContratoCaracteristica
@@ -60,9 +61,8 @@ model Contrato {
 
   //TBD - PeriodoContratual - O que é isso?
 
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now()) @updatedAt
-  oportunidadeId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum ContratoStatus {
@@ -97,37 +97,6 @@ model Oportunidade {
   Contrato               Contrato[]
 }
 
-model LeadOportunidade {
-  id                       String                     @id @default(uuid())
-  Lead                     Lead                       @relation(fields: [leadId], references: [id])
-  leadId                   String
-  //TBD - departamento
-  propostas                Proposta[]
-  titulo                   String
-  //TBD - gerenteComercial
-  caracteristica           OportunidadeCaracteristica
-  //TBD - periodoContratual
-  areaExecutora            AreaExecutora
-  dataFechamentoPrevista   DateTime
-  etapa                    OportunidadeEtapa          @default(NEGOCIACAO)
-  valor                    Float
-  createdAt                DateTime                   @default(now())
-  updatedAt                DateTime                   @default(now()) @updatedAt
-  LeadOportunidadeProposta LeadOportunidadeProposta[]
-}
-
-model LeadOportunidadeProposta {
-  id                 String           @id @default(uuid())
-  tipo               TipoProposta
-  versao             String
-  dataEnvio          DateTime
-  comissao           Float
-  leadOportunidadeId String
-  leadOportunidade   LeadOportunidade @relation(fields: [leadOportunidadeId], references: [id])
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
-}
-
 enum OportunidadeEtapa {
   NEGOCIACAO
   FECHADA
@@ -154,30 +123,81 @@ enum TipoProposta {
 }
 
 model Proposta {
-  id                 String            @id @default(uuid())
-  tipo               TipoProposta
-  versao             String
-  dataEnvio          DateTime
-  comissao           Float
-  oportunidadeId     String
-  oportunidade       Oportunidade      @relation(fields: [oportunidadeId], references: [id])
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
-  LeadOportunidade   LeadOportunidade? @relation(fields: [leadOportunidadeId], references: [id])
-  leadOportunidadeId String?
+  id                       String                  @id @default(uuid())
+  tipo                     TipoProposta
+  versao                   String
+  dataEnvio                DateTime
+  comissao                 Float
+  oportunidadeId           String
+  oportunidade             Oportunidade            @relation(fields: [oportunidadeId], references: [id])
+  createdAt                DateTime                @default(now())
+  updatedAt                DateTime                @updatedAt
+  OportunidadeProspeccao   OportunidadeProspeccao? @relation(fields: [oportunidadeProspeccaoId], references: [id])
+  oportunidadeProspeccaoId String?
 }
 
 model Lead {
-  id                    String             @id @default(uuid())
+  id                    String   @id @default(uuid())
   //TBD- gerenteComercialId
-  nomeFantasia          String //Criado temporariamente enquanto não sei o significado da coluna "Empresa"
+  nomeFantasia          String
   nomeRepresentante     String
   telefoneRepresentante String
   emailRepresentante    String
   observacao            String
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @default(now()) @updatedAt
-  LeadOportunidade      LeadOportunidade[]
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @default(now()) @updatedAt
+}
+
+model ClienteProspeccao {
+  id                     String                   @id @default(uuid())
+  nomeFantasia           String
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @default(now()) @updatedAt
+  OportunidadeProspeccao OportunidadeProspeccao[]
+}
+
+model OportunidadeProspeccao {
+  id                             String                              @id @default(uuid())
+  clienteProspeccaoId            String
+  clienteProspeccao              ClienteProspeccao                   @relation(fields: [clienteProspeccaoId], references: [id])
+  RepresentanteProspeccao        RepresentanteOportunidadeProspeccao @relation(fields: [representanteProspeccaoId], references: [id])
+  representanteProspeccaoId      String
+  propostas                      Proposta[]
+  titulo                         String
+  caracteristica                 OportunidadeCaracteristica
+  areaExecutora                  AreaExecutora
+  etapa                          OportunidadeEtapa                   @default(NEGOCIACAO)
+  dataFechamentoPrevista         DateTime
+  valor                          Float
+  createdAt                      DateTime                            @default(now())
+  updatedAt                      DateTime                            @default(now()) @updatedAt
+  PropostaOportunidadeProspeccao PropostaOportunidadeProspeccao[]
+}
+
+model RepresentanteOportunidadeProspeccao {
+  id                     String                   @id @default(uuid())
+  nome                   String
+  email                  String
+  departamento           String
+  cargo                  String
+  dataNascimento         DateTime
+  telefone               String
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @default(now()) @updatedAt
+  OportunidadeProspeccao OportunidadeProspeccao[]
+}
+
+model PropostaOportunidadeProspeccao {
+  id                       String                 @id @default(uuid())
+  oportunidadeProspeccaoId String
+  oportunidadeProspeccao   OportunidadeProspeccao @relation(fields: [oportunidadeProspeccaoId], references: [id])
+  tipo                     TipoProposta
+  versao                   String
+  dataEnvio                DateTime
+  comissao                 Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Role {
