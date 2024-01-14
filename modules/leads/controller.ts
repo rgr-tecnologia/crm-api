@@ -1,17 +1,12 @@
-import { ClienteDtoCreate } from "../clientes/dtos/cliente.dto";
-import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 import { LeadDtoCreate } from "./dtos/lead.dto";
 import * as service from "./service";
 import { Router } from "express";
-import { leadsOportunidadesRouter } from "./oportunidades/controller";
 import { RepresentanteOportunidadeProspeccaoDto } from "../representantesOportunidadeProspeccao/dtos/representantesOportunidadeProspeccao.dto";
 import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos/prospeccaoOportunidade.dto";
 
 export const leadsRouter = Router({
   mergeParams: true,
 });
-
-leadsRouter.use("/:leadId/oportunidades", leadsOportunidadesRouter);
 
 leadsRouter.get("/", async (req, res) => {
   try {
