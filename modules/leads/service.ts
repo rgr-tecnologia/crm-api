@@ -68,8 +68,10 @@ export async function promote(
     });
 
     //Criando Representante
-    const representanteValidated =
-      RepresentanteProspeccaoDtoCreate.parse(representanteData);
+    const representanteValidated = RepresentanteProspeccaoDtoCreate.parse({
+      ...representanteData,
+      clienteProspeccaoId: clienteProspeccao.id,
+    });
 
     const representanteProspeccao = await prisma.representanteProspeccao.create(
       {

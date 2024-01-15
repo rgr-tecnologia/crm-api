@@ -28,3 +28,16 @@ clientesProspeccaoRouter.get("/", async (req, res) => {
     }
   }
 });
+
+clientesProspeccaoRouter.get("/:id", async (req, res) => {
+  try {
+    const clienteProspeccao = await service.getById(req.params.id);
+    res.json(clienteProspeccao);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+});
