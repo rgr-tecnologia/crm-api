@@ -13,10 +13,10 @@ export const OportunidadeProspeccaoDto = z.object({
   caracteristica: z.nativeEnum(OportunidadeCaracteristica),
   areaExecutora: z.nativeEnum(AreaExecutora),
   etapa: z.nativeEnum(OportunidadeEtapa),
-  dataFechamentoPrevista: z.date(),
+  dataFechamentoPrevista: z.coerce.date(),
   valor: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 });
 
 export const OportunidadeProspeccaoDtoCreate = OportunidadeProspeccaoDto.omit({

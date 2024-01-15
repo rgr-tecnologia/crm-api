@@ -1,17 +1,20 @@
 import { prismaConnection } from "../../scripts/prismaConection";
 import {
+  OportunidadeProspeccaoDto,
   OportunidadeProspeccaoDtoCreate,
   OportunidadeProspeccaoDtoUpdate,
 } from "./dtos/prospeccaoOportunidade.dto";
 
 const repository = prismaConnection.oportunidadeProspeccao;
 
-export async function getAll() {
-  return await repository.findMany();
+export async function getAll(filter: Partial<OportunidadeProspeccaoDto>) {
+  return repository.findMany({
+    where: filter,
+  });
 }
 
 export async function getById(id: string) {
-  return await repository.findUnique({ where: { id } });
+  return repository.findUnique({ where: { id } });
 }
 
 export async function create(data: OportunidadeProspeccaoDtoCreate) {
@@ -19,7 +22,7 @@ export async function create(data: OportunidadeProspeccaoDtoCreate) {
     const oportunidade = OportunidadeProspeccaoDtoCreate.parse(data);
     return repository.create({ data: oportunidade });
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
@@ -29,12 +32,12 @@ export async function update(
 ) {
   try {
     const oportunidade = OportunidadeProspeccaoDtoUpdate.parse(data);
-    return await repository.update({ where: { id }, data: oportunidade });
+    return repository.update({ where: { id }, data: oportunidade });
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
 export async function remove(id: string) {
-  return await repository.delete({ where: { id } });
+  return repository.delete({ where: { id } });
 }

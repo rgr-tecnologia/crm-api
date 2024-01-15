@@ -1,8 +1,9 @@
 import { prismaConnection } from "../../scripts/prismaConection";
 import { LeadDtoCreate } from "./dtos/lead.dto";
 import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos/prospeccaoOportunidade.dto";
-import { RepresentanteOportunidadeProspeccaoDtoCreate } from "../representantesOportunidadeProspeccao/dtos/representantesOportunidadeProspeccao.dto";
+import { ClienteProspeccaoCreateDto } from "../../modules/clientesProspeccao/dtos/clienteProspeccao.dto";
 import { unmaskPhone } from "../../lib/utils/unmaskPhone";
+import { RepresentanteProspeccaoDtoCreate } from "../representantesProspeccao/dtos/representantesProspeccao.dto";
 
 const repository = prismaConnection.lead;
 
@@ -46,7 +47,7 @@ export async function remove(id: string) {
 
 export async function promote(
   id: string,
-  representanteData: RepresentanteOportunidadeProspeccaoDtoCreate,
+  representanteData: RepresentanteProspeccaoDtoCreate,
   oportunidadeProspeccaoData: OportunidadeProspeccaoDtoCreate
 ) {
   return await prismaConnection.$transaction(async (prisma) => {
@@ -59,29 +60,36 @@ export async function promote(
       throw new Error("Lead não encontrado");
     }
 
+    //Criando ClienteProspeccao
+    const clienteProspeccaoValidated = ClienteProspeccaoCreateDto.parse(lead);
+
+    const clienteProspeccao = await prisma.clienteProspeccao.create({
+      data: clienteProspeccaoValidated,
+    });
+
     //Criando Representante
     const representanteValidated =
-      RepresentanteOportunidadeProspeccaoDtoCreate.parse(representanteData);
+      RepresentanteProspeccaoDtoCreate.parse(representanteData);
 
-    const representanteProspeccao =
-      await prisma.representanteOportunidadeProspeccao.create({
+    const representanteProspeccao = await prisma.representanteProspeccao.create(
+      {
         data: representanteValidated,
-      });
+      }
+    );
 
     //Criando Oportunidade
 
-    const oportunidadeValidated = OportunidadeProspeccaoDtoCreate.parse(
-      oportunidadeProspeccaoData
-    );
-
-    const oportunidadeProspeccao = await prisma.oportunidadeProspeccao.create({
-      data: {
-        ...oportunidadeValidated,
-        representanteProspeccaoId: representanteProspeccao.id,
-      },
+    const oportunidadeValidated = OportunidadeProspeccaoDtoCreate.parse({
+      ...oportunidadeProspeccaoData,
+      representanteProspeccaoId: representanteProspeccao.id,
+      clienteProspeccaoId: clienteProspeccao.id,
     });
 
-    //Removendo Lead
+    const oportunidadeProspeccao = await prisma.oportunidadeProspeccao.create({
+      data: oportunidadeValidated,
+    });
+
+    //Deletando Lead
     await prisma.lead.delete({ where: { id } });
 
     return {

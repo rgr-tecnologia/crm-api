@@ -99,8 +99,10 @@ model Oportunidade {
 
 enum OportunidadeEtapa {
   NEGOCIACAO
-  FECHADA
   PERDIDA
+  CONGELADO
+  CONTRATO_ENVIADO
+  CONLUIDA
 }
 
 enum OportunidadeCaracteristica {
@@ -157,24 +159,24 @@ model ClienteProspeccao {
 }
 
 model OportunidadeProspeccao {
-  id                             String                              @id @default(uuid())
+  id                             String                           @id @default(uuid())
   clienteProspeccaoId            String
-  clienteProspeccao              ClienteProspeccao                   @relation(fields: [clienteProspeccaoId], references: [id])
-  RepresentanteProspeccao        RepresentanteOportunidadeProspeccao @relation(fields: [representanteProspeccaoId], references: [id])
+  clienteProspeccao              ClienteProspeccao                @relation(fields: [clienteProspeccaoId], references: [id])
+  RepresentanteProspeccao        RepresentanteProspeccao          @relation(fields: [representanteProspeccaoId], references: [id])
   representanteProspeccaoId      String
   propostas                      Proposta[]
   titulo                         String
   caracteristica                 OportunidadeCaracteristica
   areaExecutora                  AreaExecutora
-  etapa                          OportunidadeEtapa                   @default(NEGOCIACAO)
+  etapa                          OportunidadeEtapa                @default(NEGOCIACAO)
   dataFechamentoPrevista         DateTime
   valor                          Float
-  createdAt                      DateTime                            @default(now())
-  updatedAt                      DateTime                            @default(now()) @updatedAt
+  createdAt                      DateTime                         @default(now())
+  updatedAt                      DateTime                         @default(now()) @updatedAt
   PropostaOportunidadeProspeccao PropostaOportunidadeProspeccao[]
 }
 
-model RepresentanteOportunidadeProspeccao {
+model RepresentanteProspeccao {
   id                     String                   @id @default(uuid())
   nome                   String
   email                  String

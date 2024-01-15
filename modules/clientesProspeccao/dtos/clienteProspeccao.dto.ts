@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const ClienteProspeccaoDto = z.object({
+export const ClienteProspeccaoDto = z.object({
   id: z.string().uuid(),
   nomeFantasia: z.string().nonempty(),
   ativo: z.boolean().default(true),
@@ -8,13 +8,13 @@ const ClienteProspeccaoDto = z.object({
   updatedAt: z.coerce.date(),
 });
 
-const ClienteProspeccaoCreateDto = ClienteProspeccaoDto.omit({
+export const ClienteProspeccaoCreateDto = ClienteProspeccaoDto.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
-const ClienteProspeccaoUpdateDto = ClienteProspeccaoDto.omit({
+export const ClienteProspeccaoUpdateDto = ClienteProspeccaoDto.omit({
   id: true,
   createdAt: true,
   updatedAt: true,

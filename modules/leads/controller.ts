@@ -1,8 +1,8 @@
 import { LeadDtoCreate } from "./dtos/lead.dto";
 import * as service from "./service";
 import { Router } from "express";
-import { RepresentanteOportunidadeProspeccaoDto } from "../representantesOportunidadeProspeccao/dtos/representantesOportunidadeProspeccao.dto";
 import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos/prospeccaoOportunidade.dto";
+import { RepresentanteProspeccaoDtoCreate } from "../representantesProspeccao/dtos/representantesProspeccao.dto";
 
 export const leadsRouter = Router({
   mergeParams: true,
@@ -15,6 +15,8 @@ leadsRouter.get("/", async (req, res) => {
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
     }
   }
 });
@@ -46,19 +48,19 @@ leadsRouter.post("/", async (req, res) => {
 });
 
 leadsRouter.post("/:id/promote", async (req, res) => {
-  const { id } = req.params;
-  const data: {
-    representanteData: RepresentanteOportunidadeProspeccaoDto;
-    oportunidadedData: OportunidadeProspeccaoDtoCreate;
-  } = req.body;
-
-  const { representanteData, oportunidadedData } = data;
-
   try {
+    const { id } = req.params;
+    const data: {
+      representante: RepresentanteProspeccaoDtoCreate;
+      oportunidade: OportunidadeProspeccaoDtoCreate;
+    } = req.body;
+
+    const { representante, oportunidade } = data;
+
     const serviceResponse = await service.promote(
       id,
-      representanteData,
-      oportunidadedData
+      representante,
+      oportunidade
     );
 
     res.json(serviceResponse);

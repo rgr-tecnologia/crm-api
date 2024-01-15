@@ -1,9 +1,12 @@
 import { prismaConnection } from "../../scripts/prismaConection";
+import { RepresentanteProspeccaoDto } from "./dtos/representantesProspeccao.dto";
 
-const repository = prismaConnection.representanteOportunidadeProspeccao;
+const repository = prismaConnection.representanteProspeccao;
 
-export async function getAll() {
-  return await repository.findMany();
+export async function getAll(filter: Partial<RepresentanteProspeccaoDto>) {
+  return await repository.findMany({
+    where: filter,
+  });
 }
 
 export async function getById(id: string) {

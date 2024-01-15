@@ -1,14 +1,30 @@
 import { Router } from "express";
 import * as service from "./service";
 
-const clientesProspeccaoRouter = Router();
+import { prospeccaoOportunidadesRouter } from "./oportunidades/controller";
+import { representantesRouter } from "./representantes/controller";
 
-clientesProspeccaoRouter.use("/:prospeccaoId", representantesRouter);
+export const clientesProspeccaoRouter = Router();
 
-clientesProspeccaoRouter.get("/", (request, response) => {
+clientesProspeccaoRouter.use(
+  "/:prospeccaoId/oportunidades",
+  prospeccaoOportunidadesRouter
+);
+
+clientesProspeccaoRouter.use(
+  "/:prospeccaoId/representantes",
+  representantesRouter
+);
+
+clientesProspeccaoRouter.get("/", async (req, res) => {
   try {
-    return response.json(service.getAll());
+    const clientesProspeccao = await service.getAll();
+    res.json(clientesProspeccao);
   } catch (error) {
-    return response.status(500).json({ message: error.message });
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
 });

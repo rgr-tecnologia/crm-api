@@ -11,7 +11,13 @@ export const prospeccaoOportunidadesRouter = Router({
 });
 
 prospeccaoOportunidadesRouter.get("/", async (req, res) => {
-  const oportunidades = await service.getAll();
+  const params = req.params as Params;
+
+  const { prospeccaoId } = params;
+
+  const oportunidades = await service.getAll({
+    clienteProspeccaoId: prospeccaoId,
+  });
   res.json(oportunidades);
 });
 
