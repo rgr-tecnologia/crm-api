@@ -48,7 +48,7 @@ export async function createContrato(data: ContratoDTOCreate) {
         id: data.oportunidadeId,
       },
       data: {
-        etapa: "FECHADA",
+        etapa: "CONLUIDA",
       },
     });
 
