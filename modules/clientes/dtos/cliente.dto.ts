@@ -4,7 +4,6 @@ import { cnpjSchema } from "../../../zod/cnpjSchema";
 export const ClienteDto = z.object({
   id: z.string(),
   nomeFantasia: z.string(),
-  cnpj: cnpjSchema,
   ativo: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),

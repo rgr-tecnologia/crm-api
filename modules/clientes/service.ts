@@ -14,8 +14,7 @@ export async function getById(id: string) {
 }
 export async function create(data: ClienteDtoCreate) {
   try {
-    const unmaskedCnpj = unmaskCnpj(data.cnpj);
-    const result = ClienteDtoCreate.parse({ ...data, cnpj: unmaskedCnpj });
+    const result = ClienteDtoCreate.parse(data);
     const cliente = await repository.create({ data: result });
     return cliente;
   } catch (error) {
@@ -24,8 +23,7 @@ export async function create(data: ClienteDtoCreate) {
 }
 export async function update(id: string, data: ClienteDtoCreate) {
   try {
-    const unmaskedCnpj = unmaskCnpj(data.cnpj);
-    const result = ClienteDtoCreate.parse({ ...data, cnpj: unmaskedCnpj });
+    const result = ClienteDtoCreate.parse(data);
     const cliente = await repository.update({ where: { id }, data: result });
     return cliente;
   } catch (error) {
