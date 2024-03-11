@@ -1,10 +1,11 @@
+import { ContratoCaracteristica } from "@prisma/client";
 import { z } from "zod";
 
 export const ContratoDTO = z.object({
-  clienteId: z.string().uuid(),
+  filialId: z.string().uuid(),
   oportunidadeId: z.string().uuid(),
   titulo: z.string(),
-  caracteristica: z.enum(["MENSALIDADE", "PROJETO"]),
+  caracteristica: z.nativeEnum(ContratoCaracteristica),
   dataInicio: z.coerce.date(),
   dataFimPrevista: z.coerce.date(),
   dataPagamento: z.coerce.date(),

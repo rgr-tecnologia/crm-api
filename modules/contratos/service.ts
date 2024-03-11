@@ -19,10 +19,10 @@ export async function getContrato(id: string) {
   });
 }
 
-export async function getContratoByClienteId(clienteId: string) {
+export async function getContratoByClienteId(filialId: string) {
   return await repository.findMany({
     where: {
-      clienteId,
+      filialId,
     },
   });
 }
