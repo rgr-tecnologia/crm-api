@@ -10,11 +10,8 @@ datasource db {
 model Cliente {
   id             String                 @id @default(uuid())
   nomeFantasia   String
-  cnpj           String                 @unique
-  contratos      Contrato[]
   representantes ClienteRepresentante[]
   oportunidades  Oportunidade[]
-  //TBD - endereco Endereco - endereço da empresa ou do representante?
   ativo          Boolean                @default(true)
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @default(now()) @updatedAt
@@ -37,32 +34,51 @@ model ClienteRepresentante {
   updatedAt      DateTime       @default(now()) @updatedAt
 }
 
+model Filial {
+  id               String         @id @default(uuid())
+  nome             String
+  cnpj             String         @unique
+  endereco         FilialEndereco @relation(fields: [filialEnderecoId], references: [id])
+  contratos        Contrato[]
+  ativo            Boolean        @default(true)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @default(now()) @updatedAt
+  filialEnderecoId String
+}
+
+model FilialEndereco {
+  id         String   @id @default(uuid())
+  logradouro String
+  numero     String
+  bairro     String
+  cidade     String
+  estado     String
+  cep        String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+  Filial     Filial[]
+}
+
 model Contrato {
   id                       String                 @id @default(uuid())
-  clienteId                String
-  cliente                  Cliente                @relation(fields: [clienteId], references: [id])
-  oportunidade             Oportunidade           @relation(fields: [oportunidadeId], references: [id])
+  filialId                 String
+  filial                   Filial                 @relation(fields: [filialId], references: [id])
+  oportunidadeOriginal     Oportunidade           @relation(fields: [oportunidadeId], references: [id])
   oportunidadeId           String
   representanteId          String
   representanteResponsavel ClienteRepresentante   @relation(fields: [representanteId], references: [id])
   caracteristica           ContratoCaracteristica
   titulo                   String
-
-  valor                  Float
-  numeroParcelas         Int      @default(0)
-  dataInicio             DateTime
-  dataFimPrevista        DateTime
-  dataPagamento          DateTime
-  renovarAutomaticamente Boolean  @default(false)
-
-  ativo Boolean @default(true)
-
-  status ContratoStatus @default(EM_ANDAMENTO)
-
+  valor                    Float
+  numeroParcelas           Int                    @default(0)
+  dataInicio               DateTime
+  dataFimPrevista          DateTime
+  dataPagamento            DateTime
+  renovarAutomaticamente   Boolean                @default(false)
+  status                   ContratoStatus         @default(EM_ANDAMENTO)
   //TBD - PeriodoContratual - O que é isso?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @default(now()) @updatedAt
 }
 
 enum ContratoStatus {
