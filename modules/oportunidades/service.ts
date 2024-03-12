@@ -6,7 +6,7 @@ import {
 
 const repository = prismaConnection.oportunidade;
 
-export async function getAll(clienteId: string) {
+export async function getAll(clienteId?: string) {
   return repository.findMany({
     where: {
       clienteId: clienteId,
