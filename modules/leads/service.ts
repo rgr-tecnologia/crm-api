@@ -50,7 +50,7 @@ export async function remove(id: string) {
 export async function promote(
   id: string,
   representanteData: RepresentanteProspeccaoDtoCreate,
-  oportunidadeProspeccaoData: OportunidadeProspeccaoDtoCreate
+  oportunidadeData: OportunidadeProspeccaoDtoCreate
 ) {
   return await prismaConnection.$transaction(async (prisma) => {
     //Validando Lead
@@ -69,15 +69,15 @@ export async function promote(
       clienteId,
     });
 
-    const representanteProspeccao = await prisma.clienteRepresentante.create({
+    const representante = await prisma.clienteRepresentante.create({
       data: representanteValidated,
     });
 
     //Criando Oportunidade
 
     const oportunidadeValidated = OportunidadeCreateDto.parse({
-      ...oportunidadeProspeccaoData,
-      representanteProspeccaoId: representanteProspeccao.id,
+      ...oportunidadeData,
+      representanteId: representante.id,
       clienteId,
     });
 
@@ -89,7 +89,7 @@ export async function promote(
     await prisma.lead.delete({ where: { id } });
 
     return {
-      representanteProspeccao,
+      representante,
       oportunidade,
     };
   });
