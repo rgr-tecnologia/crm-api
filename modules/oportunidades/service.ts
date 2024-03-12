@@ -1,7 +1,7 @@
 import { prismaConnection } from "../../scripts/prismaConection";
 import {
-  OportunidadeCreate,
-  OportunidadeUpdate,
+  OportunidadeCreateDto,
+  OportunidadeUpdateDto,
 } from "./dtos/oportunidade.dto";
 
 const repository = prismaConnection.oportunidade;
@@ -18,9 +18,9 @@ export async function getById(id: string) {
   return repository.findUnique({ where: { id } });
 }
 
-export async function create(clienteId: string, data: OportunidadeCreate) {
+export async function create(clienteId: string, data: OportunidadeCreateDto) {
   try {
-    const validated = OportunidadeCreate.parse({
+    const validated = OportunidadeCreateDto.parse({
       ...data,
       clienteId,
     });
@@ -35,7 +35,7 @@ export async function create(clienteId: string, data: OportunidadeCreate) {
 export async function update(
   id: string,
   clienteId: string,
-  data: OportunidadeUpdate
+  data: OportunidadeUpdateDto
 ) {
   try {
     const oportunidade = await repository.findUnique({ where: { id } });
@@ -44,7 +44,7 @@ export async function update(
     if (oportunidade.etapa !== "NEGOCIACAO")
       throw new Error("Oportunidade não pode ser alterada");
 
-    const validated = OportunidadeUpdate.parse({
+    const validated = OportunidadeUpdateDto.parse({
       ...data,
       clienteId,
     });

@@ -1,8 +1,8 @@
 import { Router } from "express";
 import * as service from "../../oportunidades/service";
 import {
-  OportunidadeCreate,
-  OportunidadeUpdate,
+  OportunidadeCreateDto,
+  OportunidadeUpdateDto,
 } from "../../oportunidades/dtos/oportunidade.dto";
 
 export const oportunidadesRouter = Router({
@@ -43,7 +43,7 @@ oportunidadesRouter.get("/:id", async (req, res) => {
 oportunidadesRouter.post("/", async (req, res) => {
   try {
     const params = req.params as Params;
-    const data: OportunidadeCreate = req.body;
+    const data: OportunidadeCreateDto = req.body;
 
     const { clienteId } = params;
     const oportunidade = await service.create(clienteId, data);
@@ -58,7 +58,7 @@ oportunidadesRouter.post("/", async (req, res) => {
 oportunidadesRouter.put("/:id", async (req, res) => {
   try {
     const params = req.params as Params;
-    const data: OportunidadeUpdate = req.body;
+    const data: OportunidadeUpdateDto = req.body;
 
     const { clienteId, id } = params;
 

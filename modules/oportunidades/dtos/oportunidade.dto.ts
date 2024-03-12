@@ -19,18 +19,18 @@ export const OportunidadeDto = z.object({
   updatedAt: z.date(),
 });
 
-export const OportunidadeCreate = OportunidadeDto.omit({
+export const OportunidadeCreateDto = OportunidadeDto.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export const OportunidadeUpdate = OportunidadeDto.omit({
+export const OportunidadeUpdateDto = OportunidadeDto.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
 export type OportunidadeDto = z.infer<typeof OportunidadeDto>;
-export type OportunidadeCreate = z.infer<typeof OportunidadeCreate>;
-export type OportunidadeUpdate = z.infer<typeof OportunidadeUpdate>;
+export type OportunidadeCreateDto = z.infer<typeof OportunidadeCreateDto>;
+export type OportunidadeUpdateDto = z.infer<typeof OportunidadeUpdateDto>;

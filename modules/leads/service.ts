@@ -4,6 +4,8 @@ import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos
 import { ClienteProspeccaoCreateDto } from "../../modules/clientesProspeccao/dtos/clienteProspeccao.dto";
 import { unmaskPhone } from "../../lib/utils/unmaskPhone";
 import { RepresentanteProspeccaoDtoCreate } from "../representantesProspeccao/dtos/representantesProspeccao.dto";
+import { OportunidadeCreateDto } from "../oportunidades/dtos/oportunidade.dto";
+import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 
 const repository = prismaConnection.lead;
 
@@ -59,35 +61,27 @@ export async function promote(
     if (!lead) {
       throw new Error("Lead não encontrado");
     }
-
-    //Criando ClienteProspeccao
-    const clienteProspeccaoValidated = ClienteProspeccaoCreateDto.parse(lead);
-
-    const clienteProspeccao = await prisma.clienteProspeccao.create({
-      data: clienteProspeccaoValidated,
-    });
+    const clienteId = lead.clienteId;
 
     //Criando Representante
-    const representanteValidated = RepresentanteProspeccaoDtoCreate.parse({
+    const representanteValidated = ClienteRepresentanteDTOCreate.parse({
       ...representanteData,
-      clienteProspeccaoId: clienteProspeccao.id,
+      clienteId,
     });
 
-    const representanteProspeccao = await prisma.representanteProspeccao.create(
-      {
-        data: representanteValidated,
-      }
-    );
+    const representanteProspeccao = await prisma.clienteRepresentante.create({
+      data: representanteValidated,
+    });
 
     //Criando Oportunidade
 
-    const oportunidadeValidated = OportunidadeProspeccaoDtoCreate.parse({
+    const oportunidadeValidated = OportunidadeCreateDto.parse({
       ...oportunidadeProspeccaoData,
       representanteProspeccaoId: representanteProspeccao.id,
-      clienteProspeccaoId: clienteProspeccao.id,
+      clienteId,
     });
 
-    const oportunidadeProspeccao = await prisma.oportunidadeProspeccao.create({
+    const oportunidade = await prisma.oportunidade.create({
       data: oportunidadeValidated,
     });
 
@@ -96,7 +90,7 @@ export async function promote(
 
     return {
       representanteProspeccao,
-      oportunidadeProspeccao,
+      oportunidade,
     };
   });
 }
