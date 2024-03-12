@@ -3,7 +3,7 @@ import { mobilePhoneSchema } from "../../../zod/mobilePhoneSchema";
 
 export const LeadDto = z.object({
   id: z.string().uuid(),
-  nomeFantasia: z.string(),
+  clienteId: z.string().uuid(),
   nomeRepresentante: z.string(),
   telefoneRepresentante: mobilePhoneSchema,
   emailRepresentante: z.string().email(),
