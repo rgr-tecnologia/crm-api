@@ -2,8 +2,6 @@ import { ClienteDtoCreate } from "./dtos/cliente.dto";
 
 import { prismaConnection } from "../../scripts/prismaConection";
 
-import { unmaskCnpj } from "../../lib/utils/unmaskCnpj";
-
 const repository = prismaConnection.cliente;
 
 export async function getAll() {

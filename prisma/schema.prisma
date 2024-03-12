@@ -15,6 +15,8 @@ model Cliente {
   ativo          Boolean                @default(true)
   createdAt      DateTime               @default(now())
   updatedAt      DateTime               @default(now()) @updatedAt
+  Filial         Filial[]
+  Lead           Lead[]
 }
 
 model ClienteRepresentante {
@@ -36,6 +38,8 @@ model ClienteRepresentante {
 
 model Filial {
   id               String         @id @default(uuid())
+  clienteId        String
+  cliente          Cliente        @relation(fields: [clienteId], references: [id])
   nome             String
   cnpj             String         @unique
   endereco         FilialEndereco @relation(fields: [filialEnderecoId], references: [id])
@@ -156,8 +160,9 @@ model Proposta {
 
 model Lead {
   id                    String   @id @default(uuid())
+  clienteId             String
+  cliente               Cliente  @relation(fields: [clienteId], references: [id])
   //TBD- gerenteComercialId
-  nomeFantasia          String
   nomeRepresentante     String
   telefoneRepresentante String
   emailRepresentante    String
