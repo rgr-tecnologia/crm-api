@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 const resend = new Resend();
 
 export const invite = async (email: UsuarioDTOCreate["email"]) => {
-  const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ email }, process.env.AUTH_JWT_SECRET, {
     expiresIn: "1d",
   });
-  const appDomain = process.env.APP_DOMAIN;
+  const appDomain = process.env.RESEND_APP_DOMAIN;
 
   const { error } = await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
