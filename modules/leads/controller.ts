@@ -1,8 +1,8 @@
+import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
+import { OportunidadeCreateDto } from "../oportunidades/dtos/oportunidade.dto";
 import { LeadDtoCreate } from "./dtos/lead.dto";
 import * as service from "./service";
 import { Router } from "express";
-import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos/prospeccaoOportunidade.dto";
-import { RepresentanteProspeccaoDtoCreate } from "../representantesProspeccao/dtos/representantesProspeccao.dto";
 
 export const leadsRouter = Router({
   mergeParams: true,
@@ -46,13 +46,12 @@ leadsRouter.post("/", async (req, res) => {
     }
   }
 });
-
 leadsRouter.post("/:id/promote", async (req, res) => {
   try {
     const { id } = req.params;
     const data: {
-      representante: RepresentanteProspeccaoDtoCreate;
-      oportunidade: OportunidadeProspeccaoDtoCreate;
+      representante: ClienteRepresentanteDTOCreate;
+      oportunidade: OportunidadeCreateDto;
     } = req.body;
 
     const { representante, oportunidade } = data;
