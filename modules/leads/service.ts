@@ -1,9 +1,6 @@
 import { prismaConnection } from "../../scripts/prismaConection";
 import { LeadDtoCreate } from "./dtos/lead.dto";
-import { OportunidadeProspeccaoDtoCreate } from "../prospeccaoOportunidades/dtos/prospeccaoOportunidade.dto";
-import { ClienteProspeccaoCreateDto } from "../../modules/clientesProspeccao/dtos/clienteProspeccao.dto";
 import { unmaskPhone } from "../../lib/utils/unmaskPhone";
-import { RepresentanteProspeccaoDtoCreate } from "../representantesProspeccao/dtos/representantesProspeccao.dto";
 import { OportunidadeCreateDto } from "../oportunidades/dtos/oportunidade.dto";
 import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 
@@ -49,8 +46,8 @@ export async function remove(id: string) {
 
 export async function promote(
   id: string,
-  representanteData: RepresentanteProspeccaoDtoCreate,
-  oportunidadeData: OportunidadeProspeccaoDtoCreate
+  representanteData: ClienteRepresentanteDTOCreate,
+  oportunidadeData: OportunidadeCreateDto
 ) {
   return await prismaConnection.$transaction(async (prisma) => {
     //Validando Lead
