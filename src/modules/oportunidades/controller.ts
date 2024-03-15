@@ -10,6 +10,9 @@ oportunidadesRouter.get("/", async (req, res) => {
     const oportunidades = await service.getAll();
     res.json(oportunidades);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (error instanceof Error) {
+      return res.status(500).json({ message: error.message });
+    }
+    res.status(500).json({ message: "Erro interno" });
   }
 });

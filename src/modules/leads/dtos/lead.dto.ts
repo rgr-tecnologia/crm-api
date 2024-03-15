@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { mobilePhoneSchema } from "../../../zod/mobilePhoneSchema";
+import { mobilePhoneSchema } from "@/zod/mobilePhoneSchema";
 
 export const LeadDto = z.object({
   id: z.string().uuid(),

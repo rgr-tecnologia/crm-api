@@ -1,4 +1,4 @@
-import { prismaConnection } from "../../scripts/prismaConection";
+import { prismaConnection } from "@/scripts/prismaConection";
 import { ClienteRepresentanteDTOCreate } from "./dto/clienteRepresentante.dto";
 
 const repository = prismaConnection.clienteRepresentante;

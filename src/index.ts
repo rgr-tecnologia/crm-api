@@ -1,6 +1,6 @@
-import express from "express";
-import { router } from "./modules/routes";
-import { authRouter } from "./modules/auth/controller";
+import * as express from "express";
+import { router } from "@/modules/routes";
+import { validateJWT } from "./middlewares/checkJWT";
 
 const PORT = process.env.API_PORT;
 const app = express();
@@ -8,8 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/auth", authRouter);
-app.use("/api/v1", router);
+app.use("/api/v1", validateJWT, router);
 
 app.use("/", (req, res, next) => {
   res.status(404).json({ message: "Not Found" });

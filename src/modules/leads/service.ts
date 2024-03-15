@@ -1,6 +1,6 @@
-import { prismaConnection } from "../../scripts/prismaConection";
+import { prismaConnection } from "@/scripts/prismaConection";
 import { LeadDtoCreate } from "./dtos/lead.dto";
-import { unmaskPhone } from "../../lib/utils/unmaskPhone";
+import { unmaskPhone } from "@/utils/unmaskPhone";
 import { OportunidadeCreateDto } from "../oportunidades/dtos/oportunidade.dto";
 import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 

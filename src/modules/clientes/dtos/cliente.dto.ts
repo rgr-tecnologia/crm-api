@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { cnpjSchema } from "../../../zod/cnpjSchema";
+import { cnpjSchema } from "@/zod/cnpjSchema";
 
 export const ClienteDto = z.object({
   id: z.string(),

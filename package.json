@@ -2,31 +2,30 @@
   "name": "erp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
   "scripts": {
-    "dev": "nodemon index.ts",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:migrate:create": "prisma migrate dev --create-only"
+    "db:migrate:create": "prisma migrate dev --create-only",
+    "build": "ts-node -r tsconfig-paths/register src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^20.8.8",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "resend": "^2.1.0",
-    "typescript": "^5.2.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@prisma/client": "^5.7.0",
     "@types/express": "^4.17.20",
-    "nodemon": "^3.0.1",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.11.27",
     "prisma": "^5.7.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.2"
   }
 }

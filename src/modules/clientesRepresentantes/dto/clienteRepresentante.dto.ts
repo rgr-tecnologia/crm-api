@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { mobilePhoneSchema } from "../../../zod/mobilePhoneSchema";
+import { mobilePhoneSchema } from "@/zod/mobilePhoneSchema";
 
 export const ClienteRepresentanteDTO = z.object({
   id: z.string(),
