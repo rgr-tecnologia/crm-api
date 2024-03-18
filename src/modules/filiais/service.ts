@@ -5,6 +5,7 @@ import {
   FilialUpdate,
   FilialUpdateDto,
 } from "./dtos/filial.dto";
+import { FilialEnderecoCreateDto } from "./dtos/filialEndereco.dto";
 
 const repository = prismaConnection.filial;
 
@@ -23,28 +24,57 @@ export async function getById(id: string) {
 }
 
 export async function create(data: FilialCreate) {
-  try {
-    const validated = FilialCreateDto.parse(data);
-    return repository.create({
-      data: validated,
-      include: { filialEndereco: true },
-    });
-  } catch (error) {
-    throw error;
-  }
+  return prismaConnection.$transaction(async (prisma) => {
+    try {
+      const filialEnderecoValidated = FilialEnderecoCreateDto.parse(
+        data.filialEndereco
+      );
+      const filialEnderecoCreated = await prisma.filialEndereco.create({
+        data: filialEnderecoValidated,
+      });
+
+      const { filialEndereco, ...filial } = FilialCreateDto.parse(data);
+      const filialCreated = await prisma.filial.create({
+        data: {
+          ...filial,
+          filialEnderecoId: filialEnderecoCreated.id,
+        },
+        include: { filialEndereco: true },
+      });
+
+      return filialCreated;
+    } catch (error) {
+      throw error;
+    }
+  });
 }
 
 export async function update(id: string, data: FilialUpdate) {
-  try {
-    const validated = FilialUpdateDto.parse(data);
-    return await repository.update({
-      where: { id },
-      data: validated,
-      include: { filialEndereco: true },
-    });
-  } catch (error) {
-    throw error;
-  }
+  return prismaConnection.$transaction(async (prisma) => {
+    try {
+      const filialEnderecoValidated = FilialEnderecoCreateDto.parse(
+        data.filialEndereco
+      );
+      const filialEnderecoCreated = await prisma.filialEndereco.update({
+        where: { id: data.filialEndereco.id },
+        data: filialEnderecoValidated,
+      });
+
+      const { filialEndereco, ...filial } = FilialCreateDto.parse(data);
+      const filialCreated = await prisma.filial.update({
+        where: { id },
+        data: {
+          ...filial,
+          filialEnderecoId: filialEnderecoCreated.id,
+        },
+        include: { filialEndereco: true },
+      });
+
+      return filialCreated;
+    } catch (error) {
+      throw error;
+    }
+  });
 }
 
 export async function remove(id: string) {

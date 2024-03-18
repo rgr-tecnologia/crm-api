@@ -43,12 +43,12 @@ model Filial {
   nome             String
   cnpj             String         @unique
   telefone         String
-  filialEndereco   FilialEndereco @relation(fields: [filialEnderecoId], references: [id])
   contratos        Contrato[]
   ativo            Boolean        @default(true)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @default(now()) @updatedAt
   filialEnderecoId String
+  filialEndereco   FilialEndereco @relation(fields: [filialEnderecoId], references: [id])
 }
 
 model FilialEndereco {
@@ -61,7 +61,7 @@ model FilialEndereco {
   cep        String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  filial     Filial[]
+  filiais    Filial[]
 }
 
 model Contrato {

@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const FilialEnderecoDto = z.object({
   id: z.string().uuid(),
-  filialId: z.string().uuid(),
   logradouro: z.string(),
   numero: z.string(),
   bairro: z.string(),
@@ -25,6 +24,6 @@ export const FilialEnderecoUpdateDto = FilialEnderecoDto.omit({
   updatedAt: true,
 });
 
-export type FilialEnderecoDto = z.infer<typeof FilialEnderecoDto>;
+export type FilialEndereco = z.infer<typeof FilialEnderecoDto>;
 export type FilialEnderecoCreate = z.infer<typeof FilialEnderecoCreateDto>;
 export type FilialEnderecoUpdate = z.infer<typeof FilialEnderecoUpdateDto>;

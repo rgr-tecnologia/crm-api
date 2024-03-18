@@ -1,11 +1,12 @@
 import { mobilePhoneSchema } from "@/zod/mobilePhoneSchema";
 import { z } from "zod";
+import { FilialEnderecoDto } from "./filialEndereco.dto";
 
 export const FilialDto = z.object({
   id: z.string().uuid(),
   clienteId: z.string().uuid(),
   telefone: mobilePhoneSchema,
-  filialEnderecoId: z.string().uuid(),
+  filialEndereco: FilialEnderecoDto,
   nome: z.string(),
   cnpj: z.string().length(14),
   ativo: z.boolean(),
