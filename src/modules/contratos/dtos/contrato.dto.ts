@@ -2,6 +2,7 @@ import { ContratoCaracteristica } from "@prisma/client";
 import { z } from "zod";
 
 export const ContratoDTO = z.object({
+  id: z.string().uuid(),
   filialId: z.string().uuid(),
   oportunidadeId: z.string().uuid(),
   titulo: z.string(),

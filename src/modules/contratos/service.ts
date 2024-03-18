@@ -1,3 +1,4 @@
+import { OportunidadeEtapa } from "@prisma/client";
 import { prismaConnection } from "../../scripts/prismaConection";
 import {
   ContratoDTO,
@@ -35,7 +36,7 @@ export async function createContrato(data: ContratoDTOCreate) {
       },
     });
 
-    if (oportunidade?.etapa !== "NEGOCIACAO") {
+    if (oportunidade?.etapa !== OportunidadeEtapa.NEGOCIACAO) {
       throw new Error("Oportunidade não está em negociação");
     }
 
@@ -48,7 +49,7 @@ export async function createContrato(data: ContratoDTOCreate) {
         id: data.oportunidadeId,
       },
       data: {
-        etapa: "CONLUIDA",
+        etapa: OportunidadeEtapa.CONLUIDA,
       },
     });
 
