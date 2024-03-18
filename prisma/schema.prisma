@@ -170,63 +170,6 @@ model Lead {
   updatedAt             DateTime @default(now()) @updatedAt
 }
 
-// model ClienteProspeccao {
-//   id                      String                    @id @default(uuid())
-//   nomeFantasia            String
-//   ativo                   Boolean                   @default(true)
-//   createdAt               DateTime                  @default(now())
-//   updatedAt               DateTime                  @default(now()) @updatedAt
-//   OportunidadeProspeccao  OportunidadeProspeccao[]
-//   RepresentanteProspeccao RepresentanteProspeccao[]
-// }
-
-// model Oportunidade {
-//   id                             String                           @id @default(uuid())
-//   clienteProspeccaoId            String
-//   clienteProspeccao              ClienteProspeccao                @relation(fields: [clienteProspeccaoId], references: [id])
-//   RepresentanteProspeccao        RepresentanteProspeccao          @relation(fields: [representanteProspeccaoId], references: [id])
-//   representanteProspeccaoId      String
-//   propostas                      Proposta[]
-//   titulo                         String
-//   caracteristica                 OportunidadeCaracteristica
-//   areaExecutora                  AreaExecutora
-//   etapa                          OportunidadeEtapa                @default(NEGOCIACAO)
-//   dataFechamentoPrevista         DateTime
-//   valor                          Float
-//   createdAt                      DateTime                         @default(now())
-//   updatedAt                      DateTime                         @default(now()) @updatedAt
-//   PropostaOportunidadeProspeccao PropostaOportunidadeProspeccao[]
-// }
-
-// model RepresentanteProspeccao {
-//   id                     String                   @id @default(uuid())
-//   clienteProspeccaoId    String
-//   clienteProspeccao      ClienteProspeccao        @relation(fields: [clienteProspeccaoId], references: [id])
-//   nome                   String
-//   email                  String
-//   departamento           String
-//   cargo                  String
-//   dataNascimento         DateTime
-//   telefone               String
-//   ativo                  Boolean                  @default(true)
-//   createdAt              DateTime                 @default(now())
-//   updatedAt              DateTime                 @default(now()) @updatedAt
-//   OportunidadeProspeccao OportunidadeProspeccao[]
-// }
-
-// model PropostaOportunidade {
-//   id                       String                 @id @default(uuid())
-//   oportunidadeId String
-//   oportunidade   Oportunidade @relation(fields: [oportunidadeId], references: [id])
-//   tipo                     TipoProposta
-//   versao                   String
-//   dataEnvio                DateTime
-//   comissao                 Float
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
 enum Role {
   ADMIN
   USER
