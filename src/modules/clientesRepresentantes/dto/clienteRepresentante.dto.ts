@@ -10,9 +10,9 @@ export const ClienteRepresentanteDTO = z.object({
   cargo: z.string(),
   ativo: z.boolean(),
   departamento: z.string(),
-  dataNascimento: z.string().datetime(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  dataNascimento: z.coerce.date(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const ClienteRepresentanteDTOCreate = ClienteRepresentanteDTO.omit({
