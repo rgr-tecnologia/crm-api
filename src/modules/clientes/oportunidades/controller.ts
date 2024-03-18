@@ -1,18 +1,14 @@
 import { Router } from "express";
 import * as service from "../../oportunidades/service";
-import {
-  OportunidadeCreateDto,
-  OportunidadeUpdateDto,
-} from "../../oportunidades/dtos/oportunidade.dto";
+import { OportunidadeCreateDto } from "../../oportunidades/dtos/oportunidade.dto";
+
+type Params = {
+  clienteId: string;
+};
 
 export const oportunidadesRouter = Router({
   mergeParams: true,
 });
-
-type Params = {
-  id: string;
-  clienteId: string;
-};
 
 oportunidadesRouter.get("/", async (req, res) => {
   try {
@@ -28,18 +24,6 @@ oportunidadesRouter.get("/", async (req, res) => {
   }
 });
 
-oportunidadesRouter.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const oportunidade = await service.getById(id);
-    res.json(oportunidade);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
-  }
-});
-
 oportunidadesRouter.post("/", async (req, res) => {
   try {
     const params = req.params as Params;
@@ -47,34 +31,6 @@ oportunidadesRouter.post("/", async (req, res) => {
 
     const { clienteId } = params;
     const oportunidade = await service.create(clienteId, data);
-    res.json(oportunidade);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
-  }
-});
-
-oportunidadesRouter.put("/:id", async (req, res) => {
-  try {
-    const params = req.params as Params;
-    const data: OportunidadeUpdateDto = req.body;
-
-    const { clienteId, id } = params;
-
-    const oportunidade = await service.update(id, clienteId, data);
-    res.json(oportunidade);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
-  }
-});
-
-oportunidadesRouter.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const oportunidade = await service.remove(id);
     res.json(oportunidade);
   } catch (error) {
     if (error instanceof Error) {
