@@ -8,7 +8,7 @@ import {
 
 const repository = prismaConnection.filial;
 
-export async function getAll(clienteId: string) {
+export async function getAll(clienteId?: string) {
   return await repository.findMany({
     where: { clienteId },
     include: { filialEndereco: true },
