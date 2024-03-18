@@ -80,6 +80,7 @@ model Contrato {
   dataFimPrevista          DateTime
   dataPagamento            DateTime
   renovarAutomaticamente   Boolean                @default(false)
+  areaExecutora            AreaExecutora
   status                   ContratoStatus         @default(EM_ANDAMENTO)
   //TBD - PeriodoContratual - O que é isso?
   createdAt                DateTime               @default(now())
@@ -103,7 +104,6 @@ model Oportunidade {
   cliente                Cliente                    @relation(fields: [clienteId], references: [id])
   representanteId        String
   representante          ClienteRepresentante       @relation(fields: [representanteId], references: [id])
-  //TBD - departamento
   propostas              Proposta[]
   titulo                 String
   //TBD - gerenteComercial

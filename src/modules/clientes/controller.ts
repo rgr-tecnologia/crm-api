@@ -3,6 +3,7 @@ import * as service from "./service";
 import { representantesRouter } from "./representantes/controller";
 import { contratosRouter } from "./contratos/controller";
 import { clienteOportunidadesRouter } from "./oportunidades/controller";
+import { clienteFiliaisRouter } from "./filiais/controller";
 
 export const clientesRouter = Router({
   mergeParams: true,
@@ -11,6 +12,7 @@ export const clientesRouter = Router({
 clientesRouter.use("/:clienteId/representantes", representantesRouter);
 clientesRouter.use("/:clienteId/contratos", contratosRouter);
 clientesRouter.use("/:clienteId/oportunidades", clienteOportunidadesRouter);
+clientesRouter.use("/:clienteId/filiais", clienteFiliaisRouter);
 
 clientesRouter.get("/", async (req, res) => {
   const clientes = await service.getAll();
