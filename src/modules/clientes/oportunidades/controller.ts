@@ -30,7 +30,7 @@ clienteOportunidadesRouter.post("/", async (req, res) => {
     const data: OportunidadeCreateDto = req.body;
 
     const { clienteId } = params;
-    const oportunidade = await service.create(clienteId, data);
+    const oportunidade = await service.create(data);
     res.json(oportunidade);
   } catch (error) {
     if (error instanceof Error) {
