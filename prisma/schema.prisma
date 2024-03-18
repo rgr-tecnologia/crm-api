@@ -42,7 +42,8 @@ model Filial {
   cliente          Cliente        @relation(fields: [clienteId], references: [id])
   nome             String
   cnpj             String         @unique
-  endereco         FilialEndereco @relation(fields: [filialEnderecoId], references: [id])
+  telefone         String
+  filialEndereco   FilialEndereco @relation(fields: [filialEnderecoId], references: [id])
   contratos        Contrato[]
   ativo            Boolean        @default(true)
   createdAt        DateTime       @default(now())
@@ -60,7 +61,7 @@ model FilialEndereco {
   cep        String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  Filial     Filial[]
+  filial     Filial[]
 }
 
 model Contrato {

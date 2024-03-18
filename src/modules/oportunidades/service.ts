@@ -19,12 +19,9 @@ export async function getById(id: string) {
   return repository.findUnique({ where: { id } });
 }
 
-export async function create(clienteId: string, data: OportunidadeCreateDto) {
+export async function create(data: OportunidadeCreateDto) {
   try {
-    const validated = OportunidadeCreateDto.parse({
-      ...data,
-      clienteId,
-    });
+    const validated = OportunidadeCreateDto.parse(data);
     return repository.create({
       data: validated,
     });
