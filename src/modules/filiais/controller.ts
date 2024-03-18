@@ -8,8 +8,8 @@ export const filiaisRouter = Router({
 
 filiaisRouter.get("/", async (req, res, next) => {
   try {
-    const leads = await service.getAll();
-    res.json(leads);
+    const filiais = await service.getAll();
+    res.json(filiais);
   } catch (error) {
     next(error);
   }
@@ -20,8 +20,8 @@ filiaisRouter.get("/:id", async (req, res, next) => {
     const params = req.params;
     const { id } = params;
 
-    const lead = await service.getById(id);
-    res.json(lead);
+    const filial = await service.getById(id);
+    res.json(filial);
   } catch (error) {
     next(error);
   }
@@ -32,8 +32,8 @@ filiaisRouter.put("/:id", async (req, res, next) => {
   const data: FilialUpdate = req.body;
 
   try {
-    const lead = await service.update(id, data);
-    res.json(lead);
+    const filial = await service.update(id, data);
+    res.json(filial);
   } catch (error) {
     next(error);
   }
