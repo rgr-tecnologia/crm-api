@@ -52,25 +52,41 @@ export async function create(data: FilialCreate) {
 export async function update(id: string, data: FilialUpdate) {
   return prismaConnection.$transaction(async (prisma) => {
     try {
+      const result = await prisma.filial.findUnique({
+        where: { id },
+      });
+
+      if (!result) {
+        throw new Error("Filial não encontrada");
+      }
+
+      const filialEnderecoId = result.filialEnderecoId;
+
       const filialEnderecoValidated = FilialEnderecoCreateDto.parse(
         data.filialEndereco
       );
-      const filialEnderecoCreated = await prisma.filialEndereco.update({
-        where: { id: data.filialEndereco.id },
+
+      const filialEnderecoUpdated = await prisma.filialEndereco.update({
+        where: { id: filialEnderecoId },
         data: filialEnderecoValidated,
       });
 
+      if (!filialEnderecoUpdated)
+        throw new Error("Erro ao atualizar endereço da filial");
+
       const { filialEndereco, ...filial } = FilialCreateDto.parse(data);
-      const filialCreated = await prisma.filial.update({
+      const filialUpdated = await prisma.filial.update({
         where: { id },
         data: {
           ...filial,
-          filialEnderecoId: filialEnderecoCreated.id,
+          filialEnderecoId,
         },
         include: { filialEndereco: true },
       });
 
-      return filialCreated;
+      if (!filialUpdated) throw new Error("Erro ao atualizar filial");
+
+      return filialUpdated;
     } catch (error) {
       throw error;
     }
