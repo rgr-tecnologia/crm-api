@@ -3,7 +3,7 @@ import { clientesRouter } from "./clientes/controller";
 import { contratosRouter } from "./contratos/controller";
 import { clientesRepresentantesRouter } from "./clientesRepresentantes/controller";
 import { leadsRouter } from "./leads/controller";
-import { oportunidadesRouter } from "./clientes/oportunidades/controller";
+import { oportunidadesRouter } from "./oportunidades/controller";
 
 export const router = Router();
 

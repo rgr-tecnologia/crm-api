@@ -6,11 +6,11 @@ type Params = {
   clienteId: string;
 };
 
-export const oportunidadesRouter = Router({
+export const clienteOportunidadesRouter = Router({
   mergeParams: true,
 });
 
-oportunidadesRouter.get("/", async (req, res) => {
+clienteOportunidadesRouter.get("/", async (req, res) => {
   try {
     const params = req.params as Params;
     const { clienteId } = params;
@@ -24,7 +24,7 @@ oportunidadesRouter.get("/", async (req, res) => {
   }
 });
 
-oportunidadesRouter.post("/", async (req, res) => {
+clienteOportunidadesRouter.post("/", async (req, res) => {
   try {
     const params = req.params as Params;
     const data: OportunidadeCreateDto = req.body;
