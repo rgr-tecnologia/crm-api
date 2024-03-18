@@ -24,6 +24,6 @@ export const LeadDtoUpdate = LeadDto.omit({
   updatedAt: true,
 });
 
-export type LeadDto = z.infer<typeof LeadDto>;
-export type LeadDtoCreate = z.infer<typeof LeadDtoCreate>;
-export type LeadDtoUpdate = z.infer<typeof LeadDtoUpdate>;
+export type Lead = z.infer<typeof LeadDto>;
+export type LeadCreate = z.infer<typeof LeadDtoCreate>;
+export type LeadUpdate = z.infer<typeof LeadDtoUpdate>;

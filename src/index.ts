@@ -1,5 +1,6 @@
 import * as express from "express";
 import { router } from "@/modules/routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const PORT = process.env.API_PORT;
 const app = express();
@@ -16,3 +17,5 @@ app.use("/", (req, res, next) => {
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
 });
+
+app.use(errorHandler);

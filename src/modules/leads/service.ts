@@ -1,6 +1,5 @@
 import { prismaConnection } from "@/scripts/prismaConection";
-import { LeadDtoCreate } from "./dtos/lead.dto";
-import { unmaskPhone } from "@/utils/unmaskPhone";
+import { LeadCreate, LeadDtoCreate, LeadUpdate } from "./dtos/lead.dto";
 import { OportunidadeCreateDto } from "../oportunidades/dtos/oportunidade.dto";
 import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 
@@ -14,29 +13,21 @@ export async function getById(id: string) {
   return await repository.findUnique({ where: { id } });
 }
 
-export async function create(data: LeadDtoCreate) {
+export async function create(data: LeadCreate) {
   try {
-    const phone = unmaskPhone(data.telefoneRepresentante);
-    const lead = LeadDtoCreate.parse({
-      ...data,
-      telefoneRepresentante: phone,
-    });
+    const lead = LeadDtoCreate.parse(data);
     return repository.create({ data: lead });
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
-export async function update(id: string, data: LeadDtoCreate) {
+export async function update(id: string, data: LeadUpdate) {
   try {
-    const phone = unmaskPhone(data.telefoneRepresentante);
-    const lead = LeadDtoCreate.parse({
-      ...data,
-      telefoneRepresentante: phone,
-    });
+    const lead = LeadDtoCreate.parse(data);
     return await repository.update({ where: { id }, data: lead });
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 

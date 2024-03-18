@@ -2,11 +2,12 @@ import { z } from "zod";
 
 export const mobilePhoneSchema = z
   .string()
-  .max(11)
+  .min(14)
+  .max(14)
   .refine(
     (value: string) => {
-      const hasOnlyNumbers = /^\d+$/.test(value);
-      return hasOnlyNumbers;
+      const isE164number = /^\+\d+$/.test(value);
+      return isE164number;
     },
     {
       message: "Telefone inválido",

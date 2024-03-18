@@ -1,6 +1,6 @@
 import { ClienteRepresentanteDTOCreate } from "../clientesRepresentantes/dto/clienteRepresentante.dto";
 import { OportunidadeCreateDto } from "../oportunidades/dtos/oportunidade.dto";
-import { LeadDtoCreate } from "./dtos/lead.dto";
+import { LeadCreate, LeadUpdate } from "./dtos/lead.dto";
 import * as service from "./service";
 import { Router } from "express";
 
@@ -8,20 +8,16 @@ export const leadsRouter = Router({
   mergeParams: true,
 });
 
-leadsRouter.get("/", async (req, res) => {
+leadsRouter.get("/", async (req, res, next) => {
   try {
     const leads = await service.getAll();
     res.json(leads);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    } else {
-      res.status(500).json({ message: "Internal server error" });
-    }
+    next(error);
   }
 });
 
-leadsRouter.get("/:id", async (req, res) => {
+leadsRouter.get("/:id", async (req, res, next) => {
   try {
     const params = req.params;
     const { id } = params;
@@ -29,24 +25,20 @@ leadsRouter.get("/:id", async (req, res) => {
     const lead = await service.getById(id);
     res.json(lead);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
+    next(error);
   }
 });
 
-leadsRouter.post("/", async (req, res) => {
-  const data: LeadDtoCreate = req.body;
+leadsRouter.post("/", async (req, res, next) => {
+  const data: LeadCreate = req.body;
   try {
     const lead = await service.create(data);
     res.json(lead);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
+    next(error);
   }
 });
-leadsRouter.post("/:id/promote", async (req, res) => {
+leadsRouter.post("/:id/promote", async (req, res, next) => {
   try {
     const { id } = req.params;
     const data: {
@@ -64,23 +56,18 @@ leadsRouter.post("/:id/promote", async (req, res) => {
 
     res.json(serviceResponse);
   } catch (error) {
-    if (error instanceof Error) {
-      console.log(error.message);
-      res.status(500).json({ message: error.message });
-    }
+    next(error);
   }
 });
 
-leadsRouter.put("/:id", async (req, res) => {
+leadsRouter.put("/:id", async (req, res, next) => {
   const { id } = req.params;
-  const data: LeadDtoCreate = req.body;
+  const data: LeadUpdate = req.body;
 
   try {
     const lead = await service.update(id, data);
     res.json(lead);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ message: error.message });
-    }
+    next(error);
   }
 });
