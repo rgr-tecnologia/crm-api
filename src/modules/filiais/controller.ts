@@ -1,4 +1,4 @@
-import { FilialUpdate } from "./dtos/filial.dto";
+import { FilialCreate, FilialUpdate } from "./dtos/filial.dto";
 import * as service from "./service";
 import { Router } from "express";
 
@@ -24,6 +24,18 @@ filiaisRouter.get("/:id", async (req, res, next) => {
     res.json(filial);
   } catch (error) {
     next(error);
+  }
+});
+
+filiaisRouter.post("/", async (req, res) => {
+  try {
+    const data: FilialCreate = req.body;
+    const filial = await service.create(data);
+    res.json(filial);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 });
 
